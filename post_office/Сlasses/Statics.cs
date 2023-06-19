@@ -13,6 +13,7 @@ public static class Statics
         return connection;
     }
 
+    // Метод для вставки записи в таблицу statistic
     public static void InsertStatistic(string action, int workerId)
     {
         using (MySqlConnection connection = GetConnection())
@@ -21,7 +22,10 @@ public static class Statics
             {
                 connection.Open();
 
+                // Получаем текущую дату и время
                 DateTime datetime = DateTime.Now;
+
+                // Запрос на вставку записи в таблицу statistic
                 string insertQuery = "INSERT INTO statistic (datetime, action, workers_id) VALUES (@datetime, @action, @workers_id);";
                 MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection);
                 insertCommand.Parameters.AddWithValue("@datetime", datetime);
