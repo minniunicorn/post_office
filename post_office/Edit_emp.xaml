@@ -1,0 +1,97 @@
+﻿<Window x:Class="post_office.Edit_emp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:post_office" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Редактирование информации о клиенте" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" 
+        Icon="/Image/logo1.png">
+    <Window.Resources>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="FontFamily" Value="Montserrat Alternates" />
+            <Setter Property="Foreground" Value="#FF1E1E1E" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Background" Value="#FFC5EDF9" />
+            <Setter Property="BorderBrush" Value="#276DA0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="250" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontFamily" Value="Montserrat Alternates" />
+            <Setter Property="FontSize" Value="19" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#FF2B92CD" />
+            <Setter Property="BorderBrush" Value="#FF2B92CD" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Height" Value="29" />
+            <Setter Property="Width" Value="120" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Image/back1.jpg" Opacity="0.35" />
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Имя:" Style="{StaticResource LabelStyle}" />
+        <TextBox Name="Name_cl" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Фамилия:" Style="{StaticResource LabelStyle}"/>
+        <TextBox Name="SurName" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Отчество:" Style="{StaticResource LabelStyle}"/>
+        <TextBox Name="LastName" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Номер телефона:" Style="{StaticResource LabelStyle}"/>
+        <xctk:MaskedTextBox Name="Phone" Grid.Row="3" Mask="+7 (000) 000-00-00" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Индекс:" Style="{StaticResource LabelStyle}" />
+        <xctk:MaskedTextBox Name="Postal_index"  Mask="000000"  Grid.Row="4" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+
+        <Label Grid.Row="5" Grid.Column="0" Content="Город:" Style="{StaticResource LabelStyle}" />
+        <TextBox Name="Town" Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+
+        <Label Grid.Row="6" Grid.Column="0" Content="Адрес:" Style="{StaticResource LabelStyle}" />
+        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+            <TextBox x:Name="Street" Style="{StaticResource TextBoxStyle}" Width="400" Margin="10,0,10,0"
+             ToolTip="Введите название улицы"/>
+            <xctk:MaskedTextBox x:Name="House" Mask="AAAA" Style="{StaticResource TextBoxStyle}" Width="50" Margin="0,0,10,0"
+             ToolTip="Введите номер дома"/>
+            <xctk:MaskedTextBox x:Name="Appart" Mask="000" Style="{StaticResource TextBoxStyle}" Width="50"
+             ToolTip="Введите номер квартиры"/>
+        </StackPanel>
+
+        <Button x:Name="SaveButton" Grid.Row="7" Grid.ColumnSpan="2" Content="Сохранить" Click="SaveButton_Click" Style="{StaticResource ButtonStyle}"/>
+        <Button x:Name="CancelButton" Grid.Row="8" Grid.ColumnSpan="2" Content="Отмена" Click="CancelButton_Click" Style="{StaticResource ButtonStyle}"/>
+    </Grid>
+
+</Window>

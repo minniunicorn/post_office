@@ -1,0 +1,90 @@
+﻿<Window x:Class="post_office.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:post_office"
+        mc:Ignorable="d"
+        Title="Вход" Height="500" Width="500" Icon="/Image/logo1.png" 
+        WindowStartupLocation="CenterScreen"  >
+    <Window.Resources>
+        <Style x:Key="CustomButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF2B92CD" />
+            <Setter Property="Foreground" Value="#DEF5FB" />
+            <Setter Property="BorderBrush" Value="#FF2B92CD"/>
+            <Setter Property="FontSize" Value="19" />
+            <Setter Property="FontFamily" Value="Montserrat Alternates" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="29"/>
+            <Setter Property="Content" Value="ВОЙТИ"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#DEF5FB" />
+                    <Setter Property="Foreground" Value="#3077A3" />
+                    <Setter Property="BorderBrush" Value="#3077A3" />
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#FFC5EDF9" />
+            <Setter Property="BorderBrush" Value="#276DA0"/>
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="0,0,0,45" />
+        </Style>
+        <Style x:Key="CustomPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Background" Value="#FFC5EDF9" />
+            <Setter Property="BorderBrush" Value="#276DA0"/>
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="0,45,0,0" />
+        </Style>
+        <Style x:Key="CustomLabelStyle" TargetType="Label">
+            <Setter Property="Content" Value="Вход" />
+            <Setter Property="FontSize" Value="36" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Foreground" Value="#FF1E1E1E" />
+            <Setter Property="FontFamily" Value="Montserrat Alternates" />
+        </Style>
+        <Style x:Key="CustomErLabelStyle" TargetType="Label">
+            <Setter Property="Content" Value="" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="Red" />
+            <Setter Property="FontFamily" Value="Montserrat Alternates" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Image/back1.jpg" Opacity="0.35" />
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource CustomLabelStyle}"/>
+        <TextBox Name="UsernameTextBox" Grid.Column="1" Grid.Row="1" Style="{StaticResource CustomTextBoxStyle}"/>
+        <PasswordBox Name="PasswordBox" Grid.Column="1" Grid.Row="1" Margin="0,45,0,0" Style="{StaticResource CustomPasswordBoxStyle}"/>
+        <Button Name="LoginButton" Content="ВОЙТИ"  Click="LoginButton_Click" Grid.Column="1" Grid.Row="2" Style="{StaticResource CustomButtonStyle}"/>
+        <Button Name="Exit" Content="Закрыть программу" Grid.Row="2" Width="Auto" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="5" 
+                FontSize="17" HorizontalAlignment="Left" Style="{StaticResource CustomButtonStyle}" Click="Exit_Click"/>
+        <Label x:Name="ErrorLabel" Grid.ColumnSpan="3" Grid.Row="2" FontSize="22" Style="{StaticResource CustomErLabelStyle}"/>
+    </Grid>
+</Window>

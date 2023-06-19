@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "post_office", "post_office\post_office.csproj", "{14AD4CC5-24A7-415C-953B-73D62C2CD695}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_postoffice", "..\tests\test_postoffice\test_postoffice\test_postoffice.csproj", "{B9B9F327-A5AD-4BB5-993F-0F30B1A8D9B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14AD4CC5-24A7-415C-953B-73D62C2CD695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14AD4CC5-24A7-415C-953B-73D62C2CD695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14AD4CC5-24A7-415C-953B-73D62C2CD695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14AD4CC5-24A7-415C-953B-73D62C2CD695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9B9F327-A5AD-4BB5-993F-0F30B1A8D9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9B9F327-A5AD-4BB5-993F-0F30B1A8D9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9B9F327-A5AD-4BB5-993F-0F30B1A8D9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9B9F327-A5AD-4BB5-993F-0F30B1A8D9B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72FBAF84-66AC-40CF-AA46-8BF7EF528B3B}
+	EndGlobalSection
+EndGlobal
