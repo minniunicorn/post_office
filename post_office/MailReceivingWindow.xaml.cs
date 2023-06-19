@@ -1,6 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.IO.Packaging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -21,7 +20,6 @@ namespace post_office
         readonly string wor_root = "";
         readonly int workerId = 0;
 
-
         public MailReceivingWindow(string name, string root, int id)
         {
             InitializeComponent();
@@ -33,10 +31,14 @@ namespace post_office
             wor_root = root;
             workerId = id;
         }
+
+        // Обновление времени на экране каждую секунду
         private void Timer_Tick(object sender, EventArgs e)
         {
             time.Content = DateTime.Now.ToString("HH:mm");
         }
+
+        // Переход на главное окно
         private void Gotomain_Click(object sender, RoutedEventArgs e)
         {
             Window1 window1 = new Window1(fullname, wor_root, workerId);
@@ -44,6 +46,7 @@ namespace post_office
             this.Close();
         }
 
+        // Показать форму для добавления типа посылки
         private void Rankbtn_Click(object sender, RoutedEventArgs e)
         {
             rank.Visibility = Visibility.Visible;
@@ -52,6 +55,7 @@ namespace post_office
             invoice.Visibility = Visibility.Collapsed;
         }
 
+        // Показать форму для информации о посылке
         private void Infpackbtn_Click(object sender, RoutedEventArgs e)
         {
             rank.Visibility = Visibility.Collapsed;
@@ -60,6 +64,7 @@ namespace post_office
             invoice.Visibility = Visibility.Collapsed;
         }
 
+        // Показать форму для информации о клиенте
         private void Infclientbtn_Click(object sender, RoutedEventArgs e)
         {
             rank.Visibility = Visibility.Collapsed;
@@ -67,6 +72,8 @@ namespace post_office
             infclient.Visibility = Visibility.Visible;
             invoice.Visibility = Visibility.Collapsed;
         }
+
+        // Показать форму для создания накладной
         private void Invoice_Click(object sender, RoutedEventArgs e)
         {
             rank.Visibility = Visibility.Collapsed;
@@ -74,13 +81,8 @@ namespace post_office
             infclient.Visibility = Visibility.Collapsed;
             invoice.Visibility = Visibility.Visible;
         }
-        public enum PackageType
-        {
-            Письмо,
-            Бандероль,
-            Посылка
-        }
 
+        // Добавление адреса в таблицу "address"
         private void AddAddress()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -98,6 +100,7 @@ namespace post_office
             }
         }
 
+        // Получение ID адреса из таблицы "address"
         private int GetAddressId()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -116,6 +119,7 @@ namespace post_office
             }
         }
 
+        // Добавление клиента в таблицу "clients"
         private void AddClient(int addressId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -132,6 +136,7 @@ namespace post_office
             }
         }
 
+        // Получение ID клиента из таблицы "clients"
         private int GetClientId(int addressId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -149,6 +154,7 @@ namespace post_office
             }
         }
 
+        // Добавление места хранения в таблицу "storage"
         private void AddStorage()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -162,6 +168,7 @@ namespace post_office
             }
         }
 
+        // Получение ID места хранения из таблицы "storage"
         private int GetStorageId()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -176,6 +183,7 @@ namespace post_office
             }
         }
 
+        // Добавление накладной в таблицу "invoice"
         private void AddInvoice()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -191,6 +199,7 @@ namespace post_office
             }
         }
 
+        // Добавление посылки в таблицу "package"
         private void AddPackage(int clientsId, int storageId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -212,6 +221,7 @@ namespace post_office
             }
         }
 
+        // Получение ID посылки из таблицы "package"
         private int GetPackageId()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -226,24 +236,34 @@ namespace post_office
             }
         }
 
-
+        // Обработчик кнопки "Next"
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                // Добавление адреса
                 AddAddress();
                 int addressId = GetAddressId();
+
+                // Добавление клиента
                 AddClient(addressId);
                 int clientsId = GetClientId(addressId);
+
+                // Добавление места хранения
                 AddStorage();
                 int storageId = GetStorageId();
+
+                // Добавление накладной
                 AddInvoice();
+
+                // Добавление посылки
                 AddPackage(clientsId, storageId);
                 int packageId = GetPackageId();
+
+                // Открытие окна подтверждения
                 MailOK mailOK = new MailOK(fullname, wor_root, workerId, packageId, clientsId);
                 mailOK.Show();
                 this.Close();
-                               
             }
             catch (Exception ex)
             {

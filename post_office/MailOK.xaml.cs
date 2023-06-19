@@ -7,14 +7,17 @@ namespace post_office
 {
     public partial class MailOK : Window
     {
+        // Переменные
         readonly string fullname;
         readonly string wor_root;
         readonly int workerId;
         readonly int pack_id;
         readonly int client_id;
         readonly DispatcherTimer timer = new DispatcherTimer();
+        // Строка подключения к базе данных MySQL
         private readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
 
+        // Конструктор окна MailOK
         public MailOK(string name, string root, int id, int id_pack, int id_client)
         {
             InitializeComponent();
@@ -36,17 +39,20 @@ namespace post_office
             timer.Start();
         }
 
+        // Обработчик события таймера для отображения текущего времени
         private void Timer_Tick(object sender, EventArgs e)
         {
             time.Content = DateTime.Now.ToString("HH:mm");
         }
 
+        // Вставка записи в таблицу статистики
         private void InsertStatic(int id_pack)
         {
             string action = $"Добавлено отправление #{id_pack}";
             Statics.InsertStatistic(action, workerId);
         }
 
+        // Обработчик кнопки "На главную"
         private void Gotomain_Click(object sender, RoutedEventArgs e)
         {
             Window1 window1 = new Window1(fullname, wor_root, workerId);
@@ -54,6 +60,7 @@ namespace post_office
             Close();
         }
 
+        // Установка номера посылки
         private void SetPackageNumber(int packageId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -70,6 +77,7 @@ namespace post_office
             }
         }
 
+        // Установка типа и разряда посылки
         private void SetTypeAndRank(int packageId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -89,6 +97,7 @@ namespace post_office
             }
         }
 
+        // Установка информации о посылке
         private void SetPackageInfo(int packageId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -108,6 +117,7 @@ namespace post_office
             }
         }
 
+        // Установка информации о месте хранения
         private void SetStorageInfo(int packageID)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -127,6 +137,7 @@ namespace post_office
             }
         }
 
+        // Установка информации о клиенте
         private void SetClientInfo(int clientId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -145,6 +156,8 @@ namespace post_office
                 reader.Close();
             }
         }
+
+        // Установка информации об адресе клиента
         private void SetClientAdressInfo(int clientId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -164,9 +177,7 @@ namespace post_office
             }
         }
 
-
-
-
+        // Обработчик кнопки "Новая посылка"
         private void NewPack_Click(object sender, RoutedEventArgs e)
         {
             MailReceivingWindow mailReceivingWindow = new MailReceivingWindow(fullname, wor_root, workerId);

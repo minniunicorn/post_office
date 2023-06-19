@@ -1,18 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace post_office
 {
@@ -21,12 +8,14 @@ namespace post_office
     /// </summary>
     public partial class Edit_emp : Window
     {
-        static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
-        readonly MySqlConnection connection = new MySqlConnection(connectionString);
-        readonly string fullname = "";
-        readonly string wor_root = "";
-        readonly int workerId = 0;
-        private readonly int id_cl;
+        // Поля класса
+        static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;"; // Строка подключения к базе данных
+        readonly MySqlConnection connection = new MySqlConnection(connectionString); // Подключение к базе данных
+        // Необходимые глобалиные переменные
+        readonly string fullname = ""; // Полное имя работника
+        readonly string wor_root = ""; // Права работника
+        readonly int workerId = 0; // Идентификатор работника
+        private readonly int id_cl; // Идентификатор клиента 
 
         public Edit_emp(int id, string name, string root, int work_id)
         {
@@ -34,7 +23,8 @@ namespace post_office
             fullname = name;
             id_cl = id;
             wor_root = root;
-            workerId= work_id;
+            workerId = work_id;
+
             // Запросить данные выбранного клиента из базы данных
             string query = "SELECT clients.*, address.* " +
                "FROM clients " +
@@ -72,17 +62,19 @@ namespace post_office
             }
         }
 
+        // Обработчик события нажатия кнопки "Сохранить"
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            string firstname = Name_cl.Text;
-            string surname = SurName.Text;
-            string lastname = LastName.Text;
-            string phone = Phone.Text;
-            string postal_index = Postal_index.Text;
-            string town = Town.Text;
-            string street = Street.Text;
-            string house = House.Text;
-            string appart = Appart.Text;
+            // Получение значений полей из текстовых полей
+            string firstname = Name_cl.Text; // Имя
+            string surname = SurName.Text; // Фамилия
+            string lastname = LastName.Text; // Отчество
+            string phone = Phone.Text; // Телефон
+            string postal_index = Postal_index.Text; // Почтовый индекс
+            string town = Town.Text; // Город
+            string street = Street.Text; // Улица
+            string house = House.Text; // Дом
+            string appart = Appart.Text; // Квартира
 
             // Обновить запись выбранного клиента в базе данных
             string query = "UPDATE clients " +
@@ -92,6 +84,8 @@ namespace post_office
                 "address.street = @street, address.house = @house, address.appart = @appart " +
                 "WHERE clients.id = @id";
             MySqlCommand command = new MySqlCommand(query, connection);
+
+            // Параметры команды SQL
             command.Parameters.AddWithValue("@firstname", firstname);
             command.Parameters.AddWithValue("@surname", surname);
             command.Parameters.AddWithValue("@lastname", lastname);
@@ -108,9 +102,11 @@ namespace post_office
                 connection.Open();
                 command.ExecuteNonQuery();
                 MessageBox.Show("Данные клиента успешно обновлены в базе данных!");
+
+                // Создание экземпляра окна "EmployeesWindow" и отображение его
                 EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId);
                 employeesWindow.Show();
-                Close();
+                Close(); // Закрытие текущего окна
             }
             catch (MySqlException ex)
             {
@@ -122,11 +118,13 @@ namespace post_office
             }
         }
 
+        // Обработчик события нажатия кнопки "Отмена"
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            // Создание экземпляра окна "EmployeesWindow" и отображение его
             EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId);
             employeesWindow.Show();
-            Close();
+            Close(); // Закрытие текущего окна
         }
     }
 }

@@ -1,18 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace post_office
@@ -22,11 +10,11 @@ namespace post_office
     /// </summary>
     public partial class MoneyOK : Window
     {
-        readonly string fullname;
-        readonly string wor_root;
-        readonly int workerId;
-        readonly DispatcherTimer timer = new DispatcherTimer();
-        static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
+        readonly string fullname; // Хранит полное имя работника
+        readonly string wor_root; // Хранит уровень доступа
+        readonly int workerId; // Хранит идентификатор работника
+        readonly DispatcherTimer timer = new DispatcherTimer(); // Таймер для обновления отображения времени
+        static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;"; // Строка подключения для соединения с базой данных
         readonly MySqlConnection connection = new MySqlConnection(connectionString);
 
         public MoneyOK(string name, string root, int id, int id_mon)
@@ -36,13 +24,13 @@ namespace post_office
             wor_root = root;
             workerId = id;
 
-            InsertStatic(id_mon);
-            SetMoneyNumber(id_mon);
-            decimal sum = GetMoneyInfo(id_mon);
-            SetMoneyInfo(id_mon, sum);
-            GetSenderInfo(id_mon);
-            GetRecInfo(id_mon);
-            fio.Content = name;
+            InsertStatic(id_mon); // Вставка статистики о добавлении перевода
+            SetMoneyNumber(id_mon); // Установка номера перевода
+            decimal sum = GetMoneyInfo(id_mon); // Получение информации о сумме перевода
+            SetMoneyInfo(id_mon, sum); // Установка информации о сумме перевода
+            SetSenderInfo(id_mon); // Получение информации об отправителе
+            GetRecInfo(id_mon); // Получение информации о получателе
+            fio.Content = name; // Установка имени пользователя
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
             timer.Start();
@@ -50,14 +38,16 @@ namespace post_office
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            time.Content = DateTime.Now.ToString("HH:mm");
+            time.Content = DateTime.Now.ToString("HH:mm"); // Обновление отображения текущего времени
         }
 
         private void InsertStatic(int id_mon)
         {
             string action = $"Добавлен перевод #{id_mon}";
-            Statics.InsertStatistic(action, workerId);
+            Statics.InsertStatistic(action, workerId); // Вставка статистики о добавлении перевода
         }
+
+        //Обработчик кнопки возвращения на главное окно
         private void Gotomain_Click(object sender, RoutedEventArgs e)
         {
             Window1 window1 = new Window1(fullname, wor_root, workerId);
@@ -65,6 +55,7 @@ namespace post_office
             Close();
         }
 
+        //Установка номера перевода
         private void SetMoneyNumber(int moneyId)
         {
             using (connection)
@@ -81,6 +72,7 @@ namespace post_office
             }
         }
 
+        //Выбор суммы перевода
         private decimal GetMoneyInfo(int moneyId)
         {
             using (connection)
@@ -94,6 +86,7 @@ namespace post_office
             }
         }
 
+        //Установка информации о переводе
         private void SetMoneyInfo(int moneyId, decimal sum)
         {
             using (connection)
@@ -105,7 +98,8 @@ namespace post_office
                     tarif = 29.50m;
                 }
 
-                decimal total_sum = Math.Round(tarif + sum, 2); connection.Open();
+                decimal total_sum = Math.Round(tarif + sum, 2);
+                connection.Open();
 
                 string query = "UPDATE remittance SET total_sum = @total_sum WHERE id = @moneyId;";
                 MySqlCommand command = new MySqlCommand(query, connection);
@@ -115,7 +109,9 @@ namespace post_office
                 totalsum.Content = "Сумма перевода: " + sum + " руб., Итоговая сумма: " + total_sum;
             }
         }
-        private void GetSenderInfo(int moneyId)
+
+        //Установка информации об отправителе
+        private void SetSenderInfo(int moneyId)
         {
             using (connection)
             {
@@ -133,13 +129,12 @@ namespace post_office
                 if (reader.Read())
                 {
                     string fullName = reader.GetString("client_name");
-
                     send_inf.Content = fullName;
-
                 }
-
             }
         }
+
+        //Установка информации о получателе
         private void GetRecInfo(int moneyId)
         {
             using (connection)
@@ -158,13 +153,9 @@ namespace post_office
                 if (reader.Read())
                 {
                     string fullName = reader.GetString("rec_name");
-
                     rec_inf.Content = fullName;
-
                 }
-
             }
         }
-
     }
 }

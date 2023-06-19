@@ -1,18 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MySql.Data.MySqlClient;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace post_office
 {
@@ -21,11 +8,12 @@ namespace post_office
     /// </summary>
     public partial class Add_emp : Window
     {
-        readonly string fullname = "";
-        readonly string wor_root = "";
-        readonly int workerId = 0;
-        static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
-        readonly MySqlConnection connection = new MySqlConnection(connectionString);
+        // Необходимые глобалиные переменные
+        readonly string fullname = ""; // Полное имя работника
+        readonly string wor_root = ""; // Права работника
+        readonly int workerId = 0; // Идентификатор работника
+        static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;"; // Строка подключения к базе данных
+        readonly MySqlConnection connection = new MySqlConnection(connectionString); // Подключение к базе данных
 
         public Add_emp(string name, string root, int id)
         {
@@ -35,24 +23,27 @@ namespace post_office
             workerId = id;
         }
 
+        // Обработчик события нажатия кнопки "Сохранить"
         public void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            string firstname = Name_cl.Text;
-            string surname = SurName.Text;
-            string lastname = LastName.Text;
-            string phone = Phone.Text;
-            string postal_index = Postal_index.Text;
-            string town = Town.Text;
-            string street = Street.Text;
-            string house = House.Text;
-            string apart = Apart.Text;
+            // Получение значений полей из текстовых полей
+            string firstname = Name_cl.Text; // Имя
+            string surname = SurName.Text; // Фамилия
+            string lastname = LastName.Text; // Отчество
+            string phone = Phone.Text; // Телефон
+            string postal_index = Postal_index.Text; // Почтовый индекс
+            string town = Town.Text; // Город
+            string street = Street.Text; // Улица
+            string house = House.Text; // Дом
+            string apart = Apart.Text; // Квартира
 
             try
             {
-                connection.Open();
+                connection.Open(); // Открытие соединения с базой данных
 
                 using (MySqlCommand command = connection.CreateCommand())
                 {
+                    // Вставка записи в таблицу "address" с использованием параметров
                     command.CommandText = "INSERT INTO address (postal_index, town, street, house, appart) VALUES " +
                         "(@postal_index, @town, @street, @house, @apart);";
                     command.Parameters.AddWithValue("@postal_index", postal_index);
@@ -62,6 +53,7 @@ namespace post_office
                     command.Parameters.AddWithValue("@apart", apart);
                     command.ExecuteNonQuery();
 
+                    // Вставка записи в таблицу "clients" с использованием параметров
                     command.CommandText = "INSERT INTO clients (name, surname, lastname, phone, address_id) VALUES " +
                         "(@firstname, @surname, @lastname, @phone, LAST_INSERT_ID()) ";
                     command.Parameters.AddWithValue("@firstname", firstname);
@@ -71,28 +63,28 @@ namespace post_office
                     command.ExecuteNonQuery();
                 }
 
-                MessageBox.Show("Клиент успешно добавлен в базу данных!");
-                EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId);
-                employeesWindow.Show();
-                Close();
+                MessageBox.Show("Клиент успешно добавлен в базу данных!"); // Вывод сообщения об успешном добавлении клиента в базу данных
+
+                EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
+                employeesWindow.Show(); // Отображение окна "EmployeesWindow"
+                Close(); // Закрытие текущего окна
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show($"Ошибка при добавлении клиента в базу данных: {ex.Message}");
+                MessageBox.Show($"Ошибка при добавлении клиента в базу данных: {ex.Message}"); // Вывод сообщения об ошибке при добавлении клиента в базу данных
             }
             finally
             {
-                connection.Close();
+                connection.Close(); // Закрытие соединения с базой данных
             }
         }
 
+        // Обработчик события нажатия кнопки "Отмена"
         public void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId);
-            employeesWindow.Show();
-            Close();
+            EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
+            employeesWindow.Show(); // Отображение окна "EmployeesWindow"
+            Close(); // Закрытие текущего окна
         }
     }
-
 }
-

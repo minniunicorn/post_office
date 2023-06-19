@@ -68,7 +68,7 @@ namespace post_office
                 selectConnection.Close();
             }
         }
-
+        //Обработчик кнопки закрытия программы
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
