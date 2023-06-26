@@ -101,7 +101,7 @@
         <Label Content="Данные о получателе" Style="{StaticResource CustomLabelStyle}" Grid.Row="4"/>
         <Label Content="" Style="{StaticResource CustomConLabelStyle}" x:Name="rec_inf" Grid.Row="4" />
 
-        <Button Content="Следующий перевод"  Grid.Row="5" Style="{StaticResource CustomNextBtnStyle}"/>
+        <Button Content="Следующий перевод"  Grid.Row="5" Click="Next_Click" Style="{StaticResource CustomNextBtnStyle}"/>
 
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label x:Name="fio" Content="" HorizontalAlignment="Right" VerticalAlignment="Bottom"

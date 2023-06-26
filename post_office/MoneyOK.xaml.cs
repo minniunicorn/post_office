@@ -29,7 +29,7 @@ namespace post_office
             decimal sum = GetMoneyInfo(id_mon); // Получение информации о сумме перевода
             SetMoneyInfo(id_mon, sum); // Установка информации о сумме перевода
             SetSenderInfo(id_mon); // Получение информации об отправителе
-            GetRecInfo(id_mon); // Получение информации о получателе
+            SetRecInfo(id_mon); // Получение информации о получателе
             fio.Content = name; // Установка имени пользователя
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
@@ -125,17 +125,18 @@ namespace post_office
                 MySqlCommand senderCommand = new MySqlCommand(senderQuery, connection);
                 senderCommand.Parameters.AddWithValue("@senderId", senderId);
                 MySqlDataReader reader = senderCommand.ExecuteReader();
-
+                
                 if (reader.Read())
                 {
                     string fullName = reader.GetString("client_name");
                     send_inf.Content = fullName;
+                    
                 }
             }
         }
 
         //Установка информации о получателе
-        private void GetRecInfo(int moneyId)
+        private void SetRecInfo(int moneyId)
         {
             using (connection)
             {
@@ -145,7 +146,9 @@ namespace post_office
                 command.Parameters.AddWithValue("@moneyId", moneyId);
                 int recId = Convert.ToInt32(command.ExecuteScalar());
 
-                string recQuery = "SELECT CONCAT(surname, ' ', name, ' ', lastname) AS rec_name FROM recipient WHERE id = @recipient_id";
+                string recQuery = "SELECT CONCAT(surname, ' ', name, ' ', lastname, '\n', " +
+                    "postal_index, ', г. ', town, ', ул. ', street, ', д. ', house, ', кв. ', appart) AS rec_name " +
+                    "FROM recipient WHERE id = @recipient_id";
                 MySqlCommand recCommand = new MySqlCommand(recQuery, connection);
                 recCommand.Parameters.AddWithValue("@recipient_id", recId);
                 MySqlDataReader reader = recCommand.ExecuteReader();
@@ -156,6 +159,14 @@ namespace post_office
                     rec_inf.Content = fullName;
                 }
             }
+        }
+
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            MoneySending moneySending = new MoneySending(fullname, wor_root, workerId);
+            moneySending.Show();
+            this.Close();
+            Statics.InsertStatistic("Денежные переводы", workerId);
         }
     }
 }
