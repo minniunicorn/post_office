@@ -126,7 +126,15 @@
     <Compile Include="MailReceivingWindow.xaml.cs">
       <DependentUpon>MailReceivingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Adsress.cs" />
+    <Compile Include="Models\Clients.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\Package.cs" />
+    <Compile Include="Models\Recipient.cs" />
+    <Compile Include="Models\Remittance.cs" />
+    <Compile Include="Models\Statistic.cs" />
+    <Compile Include="Models\Storage.cs" />
     <Compile Include="MoneyOK.xaml.cs">
       <DependentUpon>MoneyOK.xaml</DependentUpon>
     </Compile>
