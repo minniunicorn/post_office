@@ -56,8 +56,6 @@ namespace post_office
                         ErrorLabel.Content = "Неверный логин и/или пароль";
                     }
                 }
-
-                
             }
             catch (Exception ex)
             {

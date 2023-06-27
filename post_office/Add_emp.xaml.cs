@@ -39,51 +39,74 @@ namespace post_office
 
             try
             {
+                ClientsWindow clientsWindow = new ClientsWindow(fullname, wor_root, workerId);
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    MySqlCommand command = connection.CreateCommand();
+                    connection.Open();
+
+                    // Проверка наличия клиента в базе данных
+                    string checkQuery = "SELECT COUNT(*) FROM clients WHERE name = @firstname AND surname = @surname AND lastname = @lastname";
+                    MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                    checkCommand.Parameters.AddWithValue("@firstname", firstname);
+                    checkCommand.Parameters.AddWithValue("@surname", surname);
+                    checkCommand.Parameters.AddWithValue("@lastname", lastname);
+
+                    int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+                    if (count > 0)
+                    {
+                        MessageBox.Show("Клиент уже существует в базе данных!");
+                        clientsWindow.Show();
+                        Close();
+                        return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+
+                    }
+
                     // Вставка записи в таблицу "address" с использованием параметров
-                    command.CommandText = "INSERT INTO address (postal_index, town, street, house, appart) VALUES " +
-                        "(@postal_index, @town, @street, @house, @apart);";
-                    command.Parameters.AddWithValue("@postal_index", postal_index);
-                    command.Parameters.AddWithValue("@town", town);
-                    command.Parameters.AddWithValue("@street", street);
-                    command.Parameters.AddWithValue("@house", house);
-                    command.Parameters.AddWithValue("@apart", apart);
-                    command.ExecuteNonQuery();
+                    string addressInsertQuery = "INSERT INTO address (postal_index, town, street, house, appart) VALUES " +
+                        "(@postal_index, @town, @street, @house, @apart)";
+                    MySqlCommand addressInsertCommand = new MySqlCommand(addressInsertQuery, connection);
+                    addressInsertCommand.Parameters.AddWithValue("@postal_index", postal_index);
+                    addressInsertCommand.Parameters.AddWithValue("@town", town);
+                    addressInsertCommand.Parameters.AddWithValue("@street", street);
+                    addressInsertCommand.Parameters.AddWithValue("@house", house);
+                    addressInsertCommand.Parameters.AddWithValue("@apart", apart);
+                    addressInsertCommand.ExecuteNonQuery();
 
                     // Вставка записи в таблицу "clients" с использованием параметров
-                    command.CommandText = "INSERT INTO clients (name, surname, lastname, phone, address_id) VALUES " +
-                        "(@firstname, @surname, @lastname, @phone, LAST_INSERT_ID()) ";
-                    command.Parameters.AddWithValue("@firstname", firstname);
-                    command.Parameters.AddWithValue("@surname", surname);
-                    command.Parameters.AddWithValue("@lastname", lastname);
-                    command.Parameters.AddWithValue("@phone", phone);
-                    command.ExecuteNonQuery();
+                    string clientsInsertQuery = "INSERT INTO clients (name, surname, lastname, phone, address_id) VALUES " +
+                        "(@firstname, @surname, @lastname, @phone, LAST_INSERT_ID())";
+                    MySqlCommand clientsInsertCommand = new MySqlCommand(clientsInsertQuery, connection);
+                    clientsInsertCommand.Parameters.AddWithValue("@firstname", firstname);
+                    clientsInsertCommand.Parameters.AddWithValue("@surname", surname);
+                    clientsInsertCommand.Parameters.AddWithValue("@lastname", lastname);
+                    clientsInsertCommand.Parameters.AddWithValue("@phone", phone);
+                    clientsInsertCommand.ExecuteNonQuery();
 
-                    command.CommandText = "SELECT LAST_INSERT_ID()";
-                    int result = Convert.ToInt32(command.ExecuteScalar());
+                    // Получение ID вставленной записи
+                    string getLastInsertIdQuery = "SELECT LAST_INSERT_ID()";
+                    MySqlCommand getLastInsertIdCommand = new MySqlCommand(getLastInsertIdQuery, connection);
+                    int result = Convert.ToInt32(getLastInsertIdCommand.ExecuteScalar());
                     string action = "Добавлен клиент #" + result;
                     Statistic.InsertStatistic(action, workerId);
                 }
 
-                MessageBox.Show("Клиент успешно добавлен в базу данных!"); // Вывод сообщения об успешном добавлении клиента в базу данных
+                MessageBox.Show("Клиент успешно добавлен в базу данных!");
 
-                ClientsWindow employeesWindow = new ClientsWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
-                employeesWindow.Show(); // Отображение окна "EmployeesWindow"
-                Close(); // Закрытие текущего окна
+                clientsWindow.Show();
+                Close();
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show($"Ошибка при добавлении клиента в базу данных: {ex.Message}"); // Вывод сообщения об ошибке при добавлении клиента в базу данных
+                MessageBox.Show($"Ошибка при добавлении клиента в базу данных: {ex.Message}");
             }
         }
+
 
         // Обработчик события нажатия кнопки "Отмена"
         public void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            ClientsWindow clientsWindow = new ClientsWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
-            clientsWindow.Show(); // Отображение окна "EmployeesWindow"
+            ClientsWindow clientsWindow = new ClientsWindow(fullname, wor_root, workerId); 
+            clientsWindow.Show(); // Отображение окна ClientsWindow
             Close(); // Закрытие текущего окна
         }
     }

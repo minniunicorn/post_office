@@ -77,31 +77,39 @@ namespace post_office
             string house = House.Text; // Дом
             string appart = Appart.Text; // Квартира
 
-            // Обновить запись выбранного клиента в базе данных
-            string query = "UPDATE clients " +
-                "JOIN address ON clients.address_id = address.id " +
-                "SET clients.name = @firstname, clients.surname = @surname, clients.lastname = @lastname, " +
-                "clients.phone = @phone, address.postal_index = @postal_index, address.town = @town, " +
-                "address.street = @street, address.house = @house, address.appart = @appart " +
-                "WHERE clients.id = @id";
-            MySqlCommand command = new MySqlCommand(query, connection);
-
-            // Параметры команды SQL
-            command.Parameters.AddWithValue("@firstname", firstname);
-            command.Parameters.AddWithValue("@surname", surname);
-            command.Parameters.AddWithValue("@lastname", lastname);
-            command.Parameters.AddWithValue("@phone", phone);
-            command.Parameters.AddWithValue("@postal_index", postal_index);
-            command.Parameters.AddWithValue("@town", town);
-            command.Parameters.AddWithValue("@street", street);
-            command.Parameters.AddWithValue("@house", house);
-            command.Parameters.AddWithValue("@appart", appart);
-            command.Parameters.AddWithValue("@id", id_cl);
-
             try
             {
                 connection.Open();
-                command.ExecuteNonQuery();
+
+                // Обновить запись выбранного клиента в базе данных
+                string clientsQuery = "UPDATE clients " +
+                    "SET name = @firstname, surname = @surname, lastname = @lastname, phone = @phone " +
+                    "WHERE id = @id";
+                string addressQuery = "UPDATE address " +
+                    "SET postal_index = @postal_index, town = @town, street = @street, house = @house, appart = @appart " +
+                    "WHERE id = (SELECT address_id FROM clients WHERE id = @id)";
+                using (MySqlCommand clientsCommand = new MySqlCommand(clientsQuery, connection))
+                {
+                    // Параметры команды SQL для обновления таблицы "clients"
+                    clientsCommand.Parameters.AddWithValue("@firstname", firstname);
+                    clientsCommand.Parameters.AddWithValue("@surname", surname);
+                    clientsCommand.Parameters.AddWithValue("@lastname", lastname);
+                    clientsCommand.Parameters.AddWithValue("@phone", phone);
+                    clientsCommand.Parameters.AddWithValue("@id", id_cl);
+                    clientsCommand.ExecuteNonQuery();
+                }
+
+                using (MySqlCommand addressCommand = new MySqlCommand(addressQuery, connection))
+                {
+                    // Параметры команды SQL для обновления таблицы "address"
+                    addressCommand.Parameters.AddWithValue("@postal_index", postal_index);
+                    addressCommand.Parameters.AddWithValue("@town", town);
+                    addressCommand.Parameters.AddWithValue("@street", street);
+                    addressCommand.Parameters.AddWithValue("@house", house);
+                    addressCommand.Parameters.AddWithValue("@appart", appart);
+                    addressCommand.Parameters.AddWithValue("@id", id_cl);
+                    addressCommand.ExecuteNonQuery();
+                }
                 MessageBox.Show("Данные клиента успешно обновлены в базе данных!");
 
                 string action = "Изменены данные клиента #" + id_cl;

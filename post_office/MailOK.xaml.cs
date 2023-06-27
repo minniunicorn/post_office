@@ -27,13 +27,16 @@ namespace post_office
             workerId = id;
             pack_id = id_pack;
             client_id = id_client;
+
             SetPackageNumber(pack_id);
             SetTypeAndRank(pack_id);
             SetPackageInfo(pack_id);
             SetStorageInfo(pack_id);
             SetClientInfo(client_id);
             SetClientAdressInfo(client_id);
-            InsertStatic(id_pack);
+
+            InsertStatistic(id_pack);
+
             fio.Content = name;
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
@@ -47,7 +50,7 @@ namespace post_office
         }
 
         // Вставка записи в таблицу статистики
-        private void InsertStatic(int id_pack)
+        private void InsertStatistic(int id_pack)
         {
             string action = $"Добавлено отправление #{id_pack}";
             Statistic.InsertStatistic(action, workerId);

@@ -51,33 +51,33 @@ namespace post_office
             }
         }
 
-            private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                try
+                DataRowView rowView = (DataRowView)dataGrid.SelectedItem;
+                if (rowView != null)
                 {
-                    DataRowView rowView = (DataRowView)dataGrid.SelectedItem;
-                    if (rowView != null)
-                    {
-                        connection.Open();
-                        int id = Convert.ToInt32(rowView["id"]);
-                        string query = "UPDATE package SET status='Выдана' WHERE id=@id AND status='Ожидает вручения'";
-                        MySqlCommand command = new MySqlCommand(query, connection);
-                        command.Parameters.AddWithValue("@id", id);
-                        command.ExecuteNonQuery();
-                        connection.Close();
-                        dataTable.Clear();
-                        LoadData();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Выберите посылку для выдачи.");
-                    }
+                    connection.Open();
+                    int id = Convert.ToInt32(rowView["id"]);
+                    string query = "UPDATE package SET status='Выдана' WHERE id=@id AND status='Ожидает вручения'";
+                    MySqlCommand command = new MySqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    dataTable.Clear();
+                    LoadData();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Выберите посылку для выдачи.");
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void Gotomain_Click(object sender, RoutedEventArgs e)
         {
             Operations operations = new Operations(fullname, wor_root, workerId);
