@@ -104,8 +104,8 @@ namespace post_office
                 MessageBox.Show("Данные клиента успешно обновлены в базе данных!");
 
                 // Создание экземпляра окна "EmployeesWindow" и отображение его
-                EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId);
-                employeesWindow.Show();
+                ClientsWindow clientsWindow = new ClientsWindow(fullname, wor_root, workerId);
+                clientsWindow.Show();
                 Close(); // Закрытие текущего окна
             }
             catch (MySqlException ex)
@@ -122,8 +122,8 @@ namespace post_office
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             // Создание экземпляра окна "EmployeesWindow" и отображение его
-            EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId);
-            employeesWindow.Show();
+            ClientsWindow clientsWindow = new ClientsWindow(fullname, wor_root, workerId);
+            clientsWindow.Show();
             Close(); // Закрытие текущего окна
         }
     }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Прием почты" WindowState="Maximized" 
-        Icon="/Image/logo1.png">
+        Icon="/Image/logo1.png" MinHeight="1000" MinWidth="1920">
     <Window.Resources>
         <Style x:Key="CustomButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#DEF5FB" />
@@ -90,6 +90,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Image/back1.jpg" Opacity="0.35"/>
         </Grid.Background>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -99,23 +100,30 @@
             <ColumnDefinition Width="540"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
         <Image  HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" Width="300" Height="465" OpacityMask="Black" Source="/Image/mail.png" StretchDirection="UpOnly"/>
+        
         <Rectangle Width="450" Height="840" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="48,0,0,0" Fill="#FF4BC2EA" Grid.Row="1" />
+        
         <Button Name="gotomain" Grid.Row="0" Grid.ColumnSpan="2" Click="Gotomain_Click" Style="{StaticResource CustomButtonGTMStyle}"/>
+        
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label x:Name="fio" Style="{StaticResource CustomFotLabelStyle}"/>
             <Label x:Name="time" FontSize="18" Style="{StaticResource CustomFotLabelStyle}"/>
         </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="80" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Content="Данные о накладной" x:Name="invoice_btn" Click="Invoice_Click"  Style="{StaticResource CustomButtonStyle}" />
             <Button Content="Тип, разряд" x:Name="rankbtn" Click="Rankbtn_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button Content="Данные о посылке" x:Name="infpackbtn" Click="Infpackbtn_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button Content="Данные о получателе" x:Name="infclientbtn" Click="Infclientbtn_Click" Style="{StaticResource CustomButtonStyle}" />
         </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="invoice" Visibility="Collapsed">
             <Label Content="Номер накладной" Style="{StaticResource CustomLabelStyle}"/>
             <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="num_inv" Mask="000"/>
         </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="rank" Visibility="Collapsed">
             <Label Content="Тип" Style="{StaticResource CustomLabelStyle}"/>
             <ComboBox Width="300" SelectedIndex="0" Style="{StaticResource CustomComboBoxStyle}" Background="#FF276DA0" x:Name="typeComboBox">
@@ -131,6 +139,7 @@
                 <ComboBoxItem Content="Заказное"/>
             </ComboBox>
         </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="infpack" Visibility="Collapsed">
             <Label Content="Вес" Style="{StaticResource CustomLabelStyle}"/>
             <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="weightTextBox" Mask="00000.00"/>
@@ -155,7 +164,7 @@
             <Label Content="Квартира" Style="{StaticResource CustomLabelStyle}"/>
             <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="appartTextBox" Mask="000"/>
         </StackPanel>
-        <Image />
+        
         <Button x:Name="next" Click="Next_Click" Grid.Row="1" Grid.Column="1" Style="{StaticResource CustomButtonNxtStyle}"/>
     </Grid>
 </Window>

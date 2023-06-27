@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
-        Title="Посылки" WindowState="Maximized" Icon="/Image/logo1.png">
+        Title="Посылки" WindowState="Maximized" Icon="/Image/logo1.png" MinHeight="1000" MinWidth="1920">
     <Window.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="10"/>
@@ -72,12 +72,15 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Image/back2.jpg" Opacity="0.35"/>
         </Grid.Background>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
+        
         <Button Name="gotomain" Content="Вернуться к выбору операций" Style="{StaticResource ButtonStyle}" Grid.Row="0" Click="Gotomain_Click"/>
+        
         <!-- Таблица с данными -->
         <DataGrid Grid.Row="1" x:Name="dataGrid" ItemsSource="{Binding Parcels}" Style="{StaticResource DataGridStyle}" RowStyle="{StaticResource {x:Type DataGridRow}}"
                   ColumnWidth="*">
@@ -99,6 +102,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        
         <TextBox Name="searchBox" Grid.Row="0" Style="{StaticResource TextBoxStyle}" TextChanged="SearchBox_TextChanged"/>
         <Button Name="donepack" Content="Выданные посылки" Style="{StaticResource ButtonStyle}" Grid.Row="2" HorizontalAlignment="Right" Click="Donepack_Click"/>
         

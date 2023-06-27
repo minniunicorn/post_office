@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
         Title="Данные о переводе" WindowState="Maximized"  WindowStartupLocation="CenterScreen" 
-        Icon="/Image/logo1.png">
+        Icon="/Image/logo1.png" MinHeight="1000" MinWidth="1920">
     <Window.Resources>
         <Style x:Key="CustomButtonGTMStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF2B92CD" />
@@ -72,10 +72,11 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid >
+    <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Image/back1.jpg" Opacity="0.35"/>
         </Grid.Background>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition/>
@@ -85,6 +86,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        
         <Button Name="gotomain" Click="Gotomain_Click" Style="{StaticResource CustomButtonGTMStyle}" Height="40" Margin="10,0,0,0" Width="430"/>
 
         <Label Content="" Style="{StaticResource CustomNumLabelStyle}" x:Name="num_mon" Grid.Row="1"/>

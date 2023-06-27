@@ -1,44 +1,24 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Windows;
-using post_office.Models;
 
 public static class Statics
 {
     // Строка подключения к базе данных
-    //static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
+    static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
 
-    /*public static MySqlConnection GetConnection()
+    public static MySqlConnection GetConnection()
     {
         MySqlConnection connection = new MySqlConnection(connectionString);
         return connection;
-    }*/
+    }
 
     // Метод для вставки записи в таблицу statistic
     public static void InsertStatistic(string action, int workerId)
     {
-        try
-        {
-            using (var context = new PostDbContext())
-            {
-                var newStatistic = new Statistic
-                {
-                    Date = DateTime.Now,
-                    Action = action,
-                    WorkerId = workerId
-                };
-
-                context.Statistics.Add(newStatistic);
-                context.SaveChanges();
-            }
-
-        }
-        catch (Exception ex)
-        { 
-            MessageBox.Show("Ошибка при выполнении операции: " + ex.ToString());
-        }
-    }
-}
-/*using (MySqlConnection connection = GetConnection())
+        using (MySqlConnection connection = GetConnection())
         {
             try
             {
@@ -63,4 +43,6 @@ public static class Statics
             {
                 connection.Close();
             }
-        }*/
+        }
+    }
+}

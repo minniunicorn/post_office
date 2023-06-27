@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
         Title="Денежные переводы" WindowStartupLocation="CenterScreen" Icon="/Image/logo1.png"
-        WindowState="Maximized">
+        WindowState="Maximized" MinHeight="1000" MinWidth="1920">
     <Window.Resources>
         <Style x:Key="CustomButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#DEF5FB" />
@@ -86,10 +86,12 @@
             <Setter Property="FontSize" Value="20" />
         </Style>
     </Window.Resources>
+    
     <Grid x:Name="grid">
         <Grid.Background>
             <ImageBrush ImageSource="/Image/back1.jpg" Opacity="0.35"/>
         </Grid.Background>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -99,18 +101,24 @@
             <ColumnDefinition Width="540"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
         <Image  HorizontalAlignment="Right" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" Width="300" Height="300" OpacityMask="Black" Source="/Image/money1.png" StretchDirection="UpOnly" Margin="0,10,0,10"/>
+        
         <Rectangle Width="450" Height="840" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="48,0,0,0" Fill="#FF4BC2EA" Grid.Row="1" />
+        
         <Button Name="gotomain" Grid.Row="0" Grid.ColumnSpan="2" Click="Gotomain_Click" Style="{StaticResource CustomButtonGTMStyle}"/>
+        
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label x:Name="fio" Style="{StaticResource CustomFotLabelStyle}"/>
             <Label x:Name="time" FontSize="18" Style="{StaticResource CustomFotLabelStyle}"/>
         </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="80" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Content="Данные об отправителе" x:Name="sender_inf" Click="Sender_inf_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button Content="Данные о получателе" x:Name="recip_inf" Click="Recip_inf_Click"  Style="{StaticResource CustomButtonStyle}" />
             <Button Content="Данные о переводе" x:Name="money_inf" Click="Money_inf_Click" Style="{StaticResource CustomButtonStyle}" />
         </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="send" Visibility="Collapsed">
             <Label Content="Фамилия" Style="{StaticResource CustomLabelStyle}"/>
             <TextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="surnameTextBox"/>
@@ -129,6 +137,7 @@
             <Label Content="Квартира" Style="{StaticResource CustomLabelStyle}"/>
             <TextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="appartTextBox"/>
         </StackPanel>
+       
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="recip" Visibility="Collapsed">
             <Label Content="Фамилия" Style="{StaticResource CustomLabelStyle}"/>
             <TextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="r_surnameTextBox"/>
@@ -147,11 +156,12 @@
             <Label Content="Квартира" Style="{StaticResource CustomLabelStyle}"/>
             <TextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="r_appartTextBox"/>
         </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="money" Visibility="Collapsed">
             <Label Content="Сумма перевода" Style="{StaticResource CustomLabelStyle}"/>
             <TextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="sumTextBox"/>
         </StackPanel>
-        <Image />
+
         <Button x:Name="next" Grid.Row="1" Click="Next_Click" Grid.Column="1" Style="{StaticResource CustomButtonNxtStyle}"/>
     </Grid>
 </Window>

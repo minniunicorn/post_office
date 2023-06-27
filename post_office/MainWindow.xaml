@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
         Title="Вход" Height="500" Width="500" Icon="/Image/logo1.png" 
-        WindowStartupLocation="CenterScreen"  >
+        WindowStartupLocation="CenterScreen"  MinHeight="500" MinWidth="500">
     <Window.Resources>
         <Style x:Key="CustomButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF2B92CD" />
@@ -69,6 +69,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Image/back1.jpg" Opacity="0.35" />
         </Grid.Background>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="250"/>
@@ -79,12 +80,16 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        
         <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource CustomLabelStyle}"/>
         <TextBox Name="UsernameTextBox" Grid.Column="1" Grid.Row="1" Style="{StaticResource CustomTextBoxStyle}"/>
+        
         <PasswordBox Name="PasswordBox" Grid.Column="1" Grid.Row="1" Margin="0,45,0,0" Style="{StaticResource CustomPasswordBoxStyle}"/>
         <Button Name="LoginButton" Content="ВОЙТИ"  Click="LoginButton_Click" Grid.Column="1" Grid.Row="2" Style="{StaticResource CustomButtonStyle}"/>
+        
         <Button Name="Exit" Content="Закрыть программу" Grid.Row="2" Width="Auto" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="5" 
                 FontSize="17" HorizontalAlignment="Left" Style="{StaticResource CustomButtonStyle}" Click="Exit_Click"/>
+        
         <Label x:Name="ErrorLabel" Grid.ColumnSpan="3" Grid.Row="2" FontSize="22" Style="{StaticResource CustomErLabelStyle}"/>
     </Grid>
 </Window>

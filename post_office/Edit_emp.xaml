@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:post_office" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Редактирование информации о клиенте" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" 
-        Icon="/Image/logo1.png">
+        Title="Редактирование информации о клиенте" WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight" Icon="/Image/logo1.png" MinHeight="500" MinWidth="750">
     <Window.Resources>
         <Style x:Key="LabelStyle" TargetType="Label">
             <Setter Property="Margin" Value="10" />
@@ -56,17 +56,16 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Имя:" Style="{StaticResource LabelStyle}" />
-        <TextBox Name="Name_cl" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+        <Label Grid.Row="0" Grid.Column="0" Content="Фамилия:" Style="{StaticResource LabelStyle}"/>
+        <TextBox Name="SurName" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Фамилия:" Style="{StaticResource LabelStyle}"/>
-        <TextBox Name="SurName" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Имя:" Style="{StaticResource LabelStyle}" />
+        <TextBox Name="Name_cl" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
 
         <Label Grid.Row="2" Grid.Column="0" Content="Отчество:" Style="{StaticResource LabelStyle}"/>
         <TextBox Name="LastName" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyle}"/>
@@ -84,9 +83,9 @@
         <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
             <TextBox x:Name="Street" Style="{StaticResource TextBoxStyle}" Width="400" Margin="10,0,10,0"
              ToolTip="Введите название улицы"/>
-            <xctk:MaskedTextBox x:Name="House" Mask="AAAA" Style="{StaticResource TextBoxStyle}" Width="50" Margin="0,0,10,0"
+            <xctk:MaskedTextBox x:Name="House" Mask="0AAA" PromptChar=" " Style="{StaticResource TextBoxStyle}" Width="50" Margin="0,0,10,0"
              ToolTip="Введите номер дома"/>
-            <xctk:MaskedTextBox x:Name="Appart" Mask="000" Style="{StaticResource TextBoxStyle}" Width="50"
+            <xctk:MaskedTextBox x:Name="Appart" Mask="000" PromptChar=" "  Style="{StaticResource TextBoxStyle}" Width="50"
              ToolTip="Введите номер квартиры"/>
         </StackPanel>
 

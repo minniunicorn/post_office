@@ -65,7 +65,7 @@ namespace post_office
 
                 MessageBox.Show("Клиент успешно добавлен в базу данных!"); // Вывод сообщения об успешном добавлении клиента в базу данных
 
-                EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
+                ClientsWindow employeesWindow = new ClientsWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
                 employeesWindow.Show(); // Отображение окна "EmployeesWindow"
                 Close(); // Закрытие текущего окна
             }
@@ -82,8 +82,8 @@ namespace post_office
         // Обработчик события нажатия кнопки "Отмена"
         public void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            EmployeesWindow employeesWindow = new EmployeesWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
-            employeesWindow.Show(); // Отображение окна "EmployeesWindow"
+            ClientsWindow clientsWindow = new ClientsWindow(fullname, wor_root, workerId); // Создание экземпляра окна "EmployeesWindow"
+            clientsWindow.Show(); // Отображение окна "EmployeesWindow"
             Close(); // Закрытие текущего окна
         }
     }

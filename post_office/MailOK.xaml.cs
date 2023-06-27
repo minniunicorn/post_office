@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Threading;
+using static Xceed.Wpf.Toolkit.Calculator;
 
 namespace post_office
 {
@@ -55,8 +56,8 @@ namespace post_office
         // Обработчик кнопки "На главную"
         private void Gotomain_Click(object sender, RoutedEventArgs e)
         {
-            Window1 window1 = new Window1(fullname, wor_root, workerId);
-            window1.Show();
+            Operations operations = new Operations(fullname, wor_root, workerId);
+            operations.Show();
             Close();
         }
 
