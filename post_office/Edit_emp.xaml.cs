@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Windows;
 
 namespace post_office
@@ -102,6 +103,9 @@ namespace post_office
                 connection.Open();
                 command.ExecuteNonQuery();
                 MessageBox.Show("Данные клиента успешно обновлены в базе данных!");
+
+                string action = "Изменены данные клиента #" + id_cl;
+                Statistic.InsertStatistic(action, workerId);
 
                 // Создание экземпляра окна "EmployeesWindow" и отображение его
                 ClientsWindow clientsWindow = new ClientsWindow(fullname, wor_root, workerId);

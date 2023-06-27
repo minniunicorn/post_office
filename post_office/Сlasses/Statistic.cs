@@ -4,21 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Windows;
 
-public static class Statics
+public static class Statistic
 {
     // Строка подключения к базе данных
     static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
 
-    public static MySqlConnection GetConnection()
-    {
-        MySqlConnection connection = new MySqlConnection(connectionString);
-        return connection;
-    }
-
     // Метод для вставки записи в таблицу statistic
     public static void InsertStatistic(string action, int workerId)
     {
-        using (MySqlConnection connection = GetConnection())
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             try
             {

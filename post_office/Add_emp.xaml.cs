@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Windows;
 
 namespace post_office
@@ -13,7 +14,6 @@ namespace post_office
         readonly string wor_root = ""; // Права работника
         readonly int workerId = 0; // Идентификатор работника
         static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;"; // Строка подключения к базе данных
-        readonly MySqlConnection connection = new MySqlConnection(connectionString); // Подключение к базе данных
 
         public Add_emp(string name, string root, int id)
         {
@@ -39,10 +39,9 @@ namespace post_office
 
             try
             {
-                connection.Open(); // Открытие соединения с базой данных
-
-                using (MySqlCommand command = connection.CreateCommand())
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
+                    MySqlCommand command = connection.CreateCommand();
                     // Вставка записи в таблицу "address" с использованием параметров
                     command.CommandText = "INSERT INTO address (postal_index, town, street, house, appart) VALUES " +
                         "(@postal_index, @town, @street, @house, @apart);";
@@ -61,6 +60,11 @@ namespace post_office
                     command.Parameters.AddWithValue("@lastname", lastname);
                     command.Parameters.AddWithValue("@phone", phone);
                     command.ExecuteNonQuery();
+
+                    command.CommandText = "SELECT LAST_INSERT_ID()";
+                    int result = Convert.ToInt32(command.ExecuteScalar());
+                    string action = "Добавлен клиент #" + result;
+                    Statistic.InsertStatistic(action, workerId);
                 }
 
                 MessageBox.Show("Клиент успешно добавлен в базу данных!"); // Вывод сообщения об успешном добавлении клиента в базу данных
@@ -72,10 +76,6 @@ namespace post_office
             catch (MySqlException ex)
             {
                 MessageBox.Show($"Ошибка при добавлении клиента в базу данных: {ex.Message}"); // Вывод сообщения об ошибке при добавлении клиента в базу данных
-            }
-            finally
-            {
-                connection.Close(); // Закрытие соединения с базой данных
             }
         }
 

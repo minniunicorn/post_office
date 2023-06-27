@@ -44,7 +44,7 @@ namespace post_office
                         fullName = reader.GetString("fullname");
                         root = reader.GetString("root");
                         workerId = reader.GetInt32("id");
-                        Statics.InsertStatistic("Вход", workerId); // Добавляем данные в таблицу statistic
+                        Statistic.InsertStatistic("Вход", workerId); // Добавляем данные в таблицу statistic
                         // Логин и пароль верны, открываем новое окно Window1 и передаем в него полное имя работника
                         Operations operations = new Operations(fullName, root, workerId);
                         operations.Show();

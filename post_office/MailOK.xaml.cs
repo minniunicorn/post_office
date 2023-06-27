@@ -50,7 +50,7 @@ namespace post_office
         private void InsertStatic(int id_pack)
         {
             string action = $"Добавлено отправление #{id_pack}";
-            Statics.InsertStatistic(action, workerId);
+            Statistic.InsertStatistic(action, workerId);
         }
 
         // Обработчик кнопки "На главную"

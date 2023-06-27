@@ -39,7 +39,7 @@ namespace post_office
             ClientsWindow employeesWindow = new ClientsWindow(fullname, wor_root, workerId);
             employeesWindow.Show();
             Close();
-            Statics.InsertStatistic("Просмотр клиентов", workerId);
+            Statistic.InsertStatistic("Просмотр клиентов", workerId);
         }
 
         private void BtnShipments_Click(object sender, RoutedEventArgs e)
@@ -47,7 +47,7 @@ namespace post_office
             ShipmentsWindow shipmentsWindow = new ShipmentsWindow(fullname, wor_root, workerId);
             shipmentsWindow.Show();
             Close();
-            Statics.InsertStatistic("Просмотр посылок", workerId);
+            Statistic.InsertStatistic("Просмотр посылок", workerId);
         }
 
         private void BtnMailReceiving_Click(object sender, RoutedEventArgs e)
@@ -55,7 +55,7 @@ namespace post_office
             MailReceivingWindow mailReceivingWindow = new MailReceivingWindow(fullname, wor_root, workerId);
             mailReceivingWindow.Show();
             Close();
-            Statics.InsertStatistic("Прием почты", workerId);
+            Statistic.InsertStatistic("Прием почты", workerId);
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
@@ -63,7 +63,7 @@ namespace post_office
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
-            Statics.InsertStatistic("Выход", workerId);
+            Statistic.InsertStatistic("Выход", workerId);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -97,7 +97,7 @@ namespace post_office
             Workers workers = new Workers(fullname, wor_root, workerId);
             workers.Show();
             this.Close();
-            Statics.InsertStatistic("Просмотр работников", workerId);
+            Statistic.InsertStatistic("Просмотр работников", workerId);
         }
 
         private void Money_Click(object sender, RoutedEventArgs e)
@@ -105,7 +105,7 @@ namespace post_office
             MoneySending moneySending = new MoneySending(fullname, wor_root, workerId);
             moneySending.Show();
             this.Close();
-            Statics.InsertStatistic("Денежные переводы", workerId);
+            Statistic.InsertStatistic("Денежные переводы", workerId);
 
         }
     }

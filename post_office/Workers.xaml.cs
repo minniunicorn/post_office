@@ -1,19 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
-using post_office.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace post_office
 {
@@ -86,7 +75,7 @@ namespace post_office
         }
         private void LoadEmployees()
         {
-            List<Employee> employees = new List<Employee>();
+            List<Worker> employees = new List<Worker>();
 
             using (connection)
             {
@@ -99,7 +88,7 @@ namespace post_office
                 {
                     while (reader.Read())
                     {
-                        Employee employee = new Employee()
+                        Worker employee = new Worker()
                         {
                             ID = reader.GetInt32("id"),
                             Surname = reader.GetString("surname"),
@@ -120,7 +109,20 @@ namespace post_office
             employeeDataGrid.ItemsSource = employees;
         }
     }
-    
-    
+
+    public class Worker
+    {
+        // Свойства класса Employee
+        public int ID { get; set; } // Идентификатор сотрудника
+        public string Surname { get; set; } // Фамилия сотрудника
+        public string Name { get; set; } // Имя сотрудника
+        public string Lastname { get; set; } // Отчество сотрудника
+        public string Position { get; set; } // Должность сотрудника
+        public string Phone { get; set; } // Телефон сотрудника
+        public string Login { get; set; } // Логин сотрудника
+        public string Password { get; set; } // Пароль сотрудника
+        public string Root { get; set; } // Уровень доступа сотрудника
+
+    }
 
 }

@@ -44,7 +44,7 @@ namespace post_office
         private void InsertStatic(int id_mon)
         {
             string action = $"Добавлен перевод #{id_mon}";
-            Statics.InsertStatistic(action, workerId); // Вставка статистики о добавлении перевода
+            Statistic.InsertStatistic(action, workerId); // Вставка статистики о добавлении перевода
         }
 
         //Обработчик кнопки возвращения на главное окно
@@ -166,7 +166,7 @@ namespace post_office
             MoneySending moneySending = new MoneySending(fullname, wor_root, workerId);
             moneySending.Show();
             this.Close();
-            Statics.InsertStatistic("Денежные переводы", workerId);
+            Statistic.InsertStatistic("Денежные переводы", workerId);
         }
     }
 }

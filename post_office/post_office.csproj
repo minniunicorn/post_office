@@ -130,7 +130,6 @@
     <Compile Include="MailReceivingWindow.xaml.cs">
       <DependentUpon>MailReceivingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Employee.cs" />
     <Compile Include="MoneyOK.xaml.cs">
       <DependentUpon>MoneyOK.xaml</DependentUpon>
     </Compile>
@@ -156,7 +155,7 @@
     <Compile Include="Workers.xaml.cs">
       <DependentUpon>Workers.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Сlasses\Statics.cs" />
+    <Compile Include="Сlasses\Statistic.cs" />
     <Page Include="Add_emp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
