@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
-        Title="Workers" WindowState="Maximized" Icon="/Image/logo1.png">
+        Title="Workers" WindowState="Maximized" Icon="/Image/logo1.png" MinHeight="1000" MinWidth="1920" >
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Image/back2.jpg" Opacity="0.35"/>

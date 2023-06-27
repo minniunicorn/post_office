@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
         Title="Данные об отправлении" WindowState="Maximized"  WindowStartupLocation="CenterScreen" 
-        Icon="/Image/logo1.png">
+        Icon="/Image/logo1.png" MinHeight="1000" MinWidth="1920">
     <Window.Resources>
         <Style x:Key="CustomButtonGTMStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF2B92CD" />

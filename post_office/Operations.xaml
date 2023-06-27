@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
         Title="Выбор операции" Width="650" Height="600" WindowStartupLocation="CenterScreen"   
-        Loaded="Window_Loaded" Icon="/Image/logo1.png" >
+        Loaded="Window_Loaded" Icon="/Image/logo1.png" MinHeight="600" MinWidth="650" MaxHeight="600" MaxWidth="650">
     <Window.Resources>
         <Style x:Key="CustomButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF2B92CD" />
@@ -46,7 +46,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-        </Grid.RowDefinitions> <!--margin 15 5 5 15-->
+        </Grid.RowDefinitions> 
 
         <Image Source="/Image/people.png" Grid.Column="0" Grid.Row="1" Margin="15"/>
         <Image Source="/Image/pack.png" Grid.Column="0" Grid.Row="2" Margin="5"/>

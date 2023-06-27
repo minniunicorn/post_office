@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Редактирование информации о клиенте" WindowStartupLocation="CenterScreen"
-        SizeToContent="WidthAndHeight" Icon="/Image/logo1.png" MinHeight="500" MinWidth="750">
+        SizeToContent="WidthAndHeight" Icon="/Image/logo1.png" MinHeight="500" MinWidth="750" MaxHeight="500" MaxWidth="750">
     <Window.Resources>
         <Style x:Key="LabelStyle" TargetType="Label">
             <Setter Property="Margin" Value="10" />

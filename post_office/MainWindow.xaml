@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:post_office"
         mc:Ignorable="d"
         Title="Вход" Height="500" Width="500" Icon="/Image/logo1.png" 
-        WindowStartupLocation="CenterScreen"  MinHeight="500" MinWidth="500">
+        WindowStartupLocation="CenterScreen"  MinHeight="500" MinWidth="500" MaxHeight="500" MaxWidth="500">
     <Window.Resources>
         <Style x:Key="CustomButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF2B92CD" />
