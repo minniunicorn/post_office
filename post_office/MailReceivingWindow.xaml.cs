@@ -87,9 +87,22 @@ namespace post_office
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                connection.Open();
 
-                string addressQuery = "INSERT IGNORE INTO address (postal_index, town, street, house, appart) VALUES (@postal_index, @town, @street, @house, @appart);";
+                string checkQuery = "SELECT COUNT(*) FROM address WHERE postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@postal_index", postalIndexTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@town", townTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@street", streetTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@house", houseTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@appart", appartTextBox.Text);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
+
+                string addressQuery = "INSERT INTO address (postal_index, town, street, house, appart) VALUES (@postal_index, @town, @street, @house, @appart);";
                 MySqlCommand addressCommand = new MySqlCommand(addressQuery, connection);
                 addressCommand.Parameters.AddWithValue("@postal_index", postalIndexTextBox.Text);
                 addressCommand.Parameters.AddWithValue("@town", townTextBox.Text);
@@ -126,7 +139,20 @@ namespace post_office
             {
                 connection.Open();
 
-                string clientsQuery = "INSERT IGNORE INTO clients (surname, name, lastname, address_id) VALUES (@surname, @name, @lastname, @address_id);";
+                string checkQuery = "SELECT COUNT(*) FROM address WHERE postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@surname", surnameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@name", nameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@lastname", lastnameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@address_id", addressId);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
+
+                string clientsQuery = "INSERT INTO clients (surname, name, lastname, address_id) VALUES (@surname, @name, @lastname, @address_id);";
                 MySqlCommand clientsCommand = new MySqlCommand(clientsQuery, connection);
                 clientsCommand.Parameters.AddWithValue("@surname", surnameTextBox.Text);
                 clientsCommand.Parameters.AddWithValue("@name", nameTextBox.Text);
@@ -161,7 +187,17 @@ namespace post_office
             {
                 connection.Open();
 
-                string storageQuery = "INSERT IGNORE INTO storage (number) VALUES (@number);";
+                string checkQuery = "SELECT COUNT(*) FROM storage WHERE number = @number;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@number", storageTextBox.Text);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
+
+                string storageQuery = "INSERT INTO storage (number) VALUES (@number);";
                 MySqlCommand storageCommand = new MySqlCommand(storageQuery, connection);
                 storageCommand.Parameters.AddWithValue("@number", storageTextBox.Text);
                 storageCommand.ExecuteNonQuery();
@@ -190,7 +226,18 @@ namespace post_office
             {
                 connection.Open();
 
-                string invoiceQuery = "INSERT IGNORE INTO invoice (id, date, workers_id) VALUES (@id, @date, @workers_id);";
+                string checkQuery = "SELECT COUNT(*) FROM invoice WHERE id = @id AND workers_id = @workers_id;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@id", num_inv.Text);
+                checkCommand.Parameters.AddWithValue("@workers_id", workerId);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
+
+                string invoiceQuery = "INSERT INTO invoice (id, date, workers_id) VALUES (@id, @date, @workers_id);";
                 MySqlCommand invoiceCommand = new MySqlCommand(invoiceQuery, connection);
                 invoiceCommand.Parameters.AddWithValue("@id", num_inv.Text);
                 invoiceCommand.Parameters.AddWithValue("@date", DateTime.Now);
@@ -205,6 +252,8 @@ namespace post_office
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
+
+                //сделать проверку, что если посылка есть установить статус ожидает вручения
 
                 string packageQuery = "INSERT IGNORE INTO package (weight, status, type, pac_rank, storage_id, invoice_id, clients_id) VALUES (@weight, @status, @type, @pac_rank, @storage_id, @invoice_id, @clients_id);";
                 MySqlCommand packageCommand = new MySqlCommand(packageQuery, connection);
@@ -236,11 +285,34 @@ namespace post_office
             }
         }
 
+        // Проверка наличия посылки в таблице "package"
+        /*private bool PackageExists()
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string checkPackageQuery = "SELECT COUNT(*) FROM package WHERE invoice_id = @invoice_id;";
+                MySqlCommand checkPackageCommand = new MySqlCommand(checkPackageQuery, connection);
+                int packageCount = Convert.ToInt32(checkPackageCommand.ExecuteScalar());
+                if (packageCount > 0) return true;
+                else
+                {
+                    return false;
+                }
+            }
+        }*/
+
         // Обработчик кнопки "Next"
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                /*if (PackageExists())
+                {
+                    MessageBox.Show("Посылка с указанным номером накладной уже существует в базе данных");
+                    return;
+                }*/
                 // Добавление адреса
                 AddAddress();
                 int addressId = GetAddressId();

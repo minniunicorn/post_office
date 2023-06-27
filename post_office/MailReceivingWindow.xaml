@@ -121,7 +121,7 @@
         
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="invoice" Visibility="Collapsed">
             <Label Content="Номер накладной" Style="{StaticResource CustomLabelStyle}"/>
-            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="num_inv" Mask="000"/>
+            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="num_inv" Mask="000" PromptChar=" "/>
         </StackPanel>
         
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="rank" Visibility="Collapsed">
@@ -142,7 +142,7 @@
         
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="infpack" Visibility="Collapsed">
             <Label Content="Вес" Style="{StaticResource CustomLabelStyle}"/>
-            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="weightTextBox" Mask="00000.00"/>
+            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="weightTextBox" Mask="9999.99" PromptChar=" "/>
             <Label Content="Место хранения" Style="{StaticResource CustomLabelStyle}"/>
             <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="storageTextBox" Mask="000000"/>
         </StackPanel>
@@ -160,9 +160,9 @@
             <Label Content="Улица" Style="{StaticResource CustomLabelStyle}"/>
             <TextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="streetTextBox"/>
             <Label Content="Дом" Style="{StaticResource CustomLabelStyle}"/>
-            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="houseTextBox" Mask="AAAA"/>
+            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="houseTextBox" Mask="AAAA" PromptChar=" "/>
             <Label Content="Квартира" Style="{StaticResource CustomLabelStyle}"/>
-            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="appartTextBox" Mask="000"/>
+            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="appartTextBox" Mask="000" PromptChar=" "/>
         </StackPanel>
         
         <Button x:Name="next" Click="Next_Click" Grid.Row="1" Grid.Column="1" Style="{StaticResource CustomButtonNxtStyle}"/>
