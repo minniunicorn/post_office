@@ -79,3 +79,9 @@ D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\Ma
 D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\MailOK.baml
 D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\MoneyOK.g.cs
 D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\MoneyOK.baml
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\bin\Debug\EntityFramework.dll
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\bin\Debug\EntityFramework.SqlServer.dll
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\bin\Debug\EntityFramework.xml
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\bin\Debug\EntityFramework.SqlServer.xml
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\bin\Debug\MySql.Data.EntityFramework.dll
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\bin\Debug\MySql.Data.EntityFramework.xml
