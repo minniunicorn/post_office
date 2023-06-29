@@ -142,7 +142,7 @@
         
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="80" x:Name="infpack" Visibility="Collapsed">
             <Label Content="Вес" Style="{StaticResource CustomLabelStyle}"/>
-            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="weightTextBox" Mask="9999.99" PromptChar=" "/>
+            <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="weightTextBox"/>
             <Label Content="Место хранения" Style="{StaticResource CustomLabelStyle}"/>
             <xctk:MaskedTextBox Style="{StaticResource CustomTextBoxStyle}" x:Name="storageTextBox" Mask="000000"/>
         </StackPanel>

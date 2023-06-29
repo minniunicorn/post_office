@@ -253,15 +253,34 @@ namespace post_office
             {
                 connection.Open();
 
-                //сделать проверку, что если посылка есть установить статус ожидает вручения
+                string checkQuery = "SELECT COUNT(*) FROM package WHERE weight = @weight AND type = @type AND pac_rank = @pac_rank AND clients_id = @clients_id;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@weight", weightTextBox.Text);
+                string selectedType = ((ComboBoxItem)typeComboBox.SelectedItem).Content.ToString();
+                checkCommand.Parameters.AddWithValue("@type", selectedType);
+                string selectedRank = ((ComboBoxItem)rankComboBox.SelectedItem).Content.ToString();
+                checkCommand.Parameters.AddWithValue("@pac_rank", selectedRank);
+                checkCommand.Parameters.AddWithValue("@clients_id", clientsId);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
 
-                string packageQuery = "INSERT IGNORE INTO package (weight, status, type, pac_rank, storage_id, invoice_id, clients_id) VALUES (@weight, @status, @type, @pac_rank, @storage_id, @invoice_id, @clients_id);";
+                if (count > 0)
+                {
+                    int packid = GetPackageId();
+                    string updateQuery = "UPDATE package SET status='Ожидает вручения' WHERE id=@pack_id";
+                    MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection);
+                    updateCommand.Parameters.AddWithValue("@pack_id", packid);
+                    MessageBox.Show("Статус существующей посылки был изменен");
+                    updateCommand.ExecuteNonQuery();
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
+
+                string packageQuery = "INSERT INTO package (weight, status, type, pac_rank, storage_id, invoice_id, clients_id) VALUES (@weight, @status, @type, @pac_rank, @storage_id, @invoice_id, @clients_id);";
                 MySqlCommand packageCommand = new MySqlCommand(packageQuery, connection);
                 packageCommand.Parameters.AddWithValue("@weight", weightTextBox.Text);
                 packageCommand.Parameters.AddWithValue("@status", "Ожидает вручения");
-                string selectedType = ((ComboBoxItem)typeComboBox.SelectedItem).Content.ToString();
+                selectedType = ((ComboBoxItem)typeComboBox.SelectedItem).Content.ToString();
                 packageCommand.Parameters.AddWithValue("@type", selectedType);
-                string selectedRank = ((ComboBoxItem)rankComboBox.SelectedItem).Content.ToString();
+                selectedRank = ((ComboBoxItem)rankComboBox.SelectedItem).Content.ToString();
                 packageCommand.Parameters.AddWithValue("@pac_rank", selectedRank);
                 packageCommand.Parameters.AddWithValue("@storage_id", storageId);
                 packageCommand.Parameters.AddWithValue("@invoice_id", num_inv.Text);
@@ -285,34 +304,12 @@ namespace post_office
             }
         }
 
-        // Проверка наличия посылки в таблице "package"
-        /*private bool PackageExists()
-        {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string checkPackageQuery = "SELECT COUNT(*) FROM package WHERE invoice_id = @invoice_id;";
-                MySqlCommand checkPackageCommand = new MySqlCommand(checkPackageQuery, connection);
-                int packageCount = Convert.ToInt32(checkPackageCommand.ExecuteScalar());
-                if (packageCount > 0) return true;
-                else
-                {
-                    return false;
-                }
-            }
-        }*/
-
         // Обработчик кнопки "Next"
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                /*if (PackageExists())
-                {
-                    MessageBox.Show("Посылка с указанным номером накладной уже существует в базе данных");
-                    return;
-                }*/
+                
                 // Добавление адреса
                 AddAddress();
                 int addressId = GetAddressId();
