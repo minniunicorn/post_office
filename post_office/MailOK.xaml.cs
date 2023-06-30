@@ -52,7 +52,7 @@ namespace post_office
         // Вставка записи в таблицу статистики
         private void InsertStatistic(int id_pack)
         {
-            string action = $"Добавлено отправление #{id_pack}";
+            string action = $"Добавлена информация об отправлении #{id_pack}";
             Statistic.InsertStatistic(action, workerId);
         }
 

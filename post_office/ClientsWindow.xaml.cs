@@ -75,10 +75,21 @@ namespace post_office
                     // Если пользователь подтверждает удаление строки, то выполнить удаление
                     if (result == MessageBoxResult.Yes)
                     {
+                        string getaddressid = "SELECT address_id FROM clients WHERE id = " + id;
+                        MySqlCommand getaddressidcom = new MySqlCommand(getaddressid, connection);
+                        int adID = Convert.ToInt32(getaddressidcom.ExecuteScalar());
+
                         // Выполнить запрос на удаление строки из базы данных
                         string query = "DELETE FROM clients WHERE id = " + id;
                         MySqlCommand command = new MySqlCommand(query, connection);
                         command.ExecuteNonQuery();
+
+                        string deladr = "DELETE FROM address WHERE id = " + adID;
+                        MySqlCommand delcommand = new MySqlCommand(deladr, connection);
+                        delcommand.ExecuteNonQuery();
+
+                        string action = "Удален клиент #" + id;
+                        Statistic.InsertStatistic(action, workerId);
 
                         // Обновить datagrid
                         LoadData();
@@ -86,7 +97,7 @@ namespace post_office
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при добавлении клиента в базу данных: {ex.Message}");
+                    MessageBox.Show($"Ошибка при удалении клиента: {ex.Message}");
                 }
                 finally
                 {

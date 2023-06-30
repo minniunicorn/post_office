@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.IO.Packaging;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -85,8 +87,22 @@ namespace post_office
         // Добавление адреса в таблицу "address"
         private void AddAddress()
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            /*using (connection)
             {
+                
+
+                string addressQuery = "INSERT INTO address (postal_index, town, street, house, appart) VALUES (@postal_index, @town, @street, @house, @appart);";
+                MySqlCommand addressCommand = new MySqlCommand(addressQuery, connection);
+                addressCommand.Parameters.AddWithValue("@postal_index", postalIndexTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@town", townTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@street", streetTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@house", houseTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@appart", appartTextBox.Text);
+                addressCommand.ExecuteNonQuery();
+            }*/
+            try
+            {
+                connection.Open();
 
                 string checkQuery = "SELECT COUNT(*) FROM address WHERE postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
                 MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
@@ -111,6 +127,15 @@ namespace post_office
                 addressCommand.Parameters.AddWithValue("@appart", appartTextBox.Text);
                 addressCommand.ExecuteNonQuery();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при выполнении операции: " + ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
+
         }
 
         // Получение ID адреса из таблицы "address"
@@ -135,11 +160,11 @@ namespace post_office
         // Добавление клиента в таблицу "clients"
         private void AddClient(int addressId)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            try
             {
                 connection.Open();
 
-                string checkQuery = "SELECT COUNT(*) FROM address WHERE postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
+                string checkQuery = "SELECT COUNT(*) FROM clients WHERE surname = @surname AND name = @name AND lastname = @lastname AND address_id = @address_id;";
                 MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
                 checkCommand.Parameters.AddWithValue("@surname", surnameTextBox.Text);
                 checkCommand.Parameters.AddWithValue("@name", nameTextBox.Text);
@@ -159,6 +184,14 @@ namespace post_office
                 clientsCommand.Parameters.AddWithValue("@lastname", lastnameTextBox.Text);
                 clientsCommand.Parameters.AddWithValue("@address_id", addressId);
                 clientsCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при выполнении операции: " + ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
@@ -183,7 +216,7 @@ namespace post_office
         // Добавление места хранения в таблицу "storage"
         private void AddStorage()
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            try
             {
                 connection.Open();
 
@@ -201,6 +234,14 @@ namespace post_office
                 MySqlCommand storageCommand = new MySqlCommand(storageQuery, connection);
                 storageCommand.Parameters.AddWithValue("@number", storageTextBox.Text);
                 storageCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при выполнении операции: " + ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
@@ -222,7 +263,7 @@ namespace post_office
         // Добавление накладной в таблицу "invoice"
         private void AddInvoice()
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            try
             {
                 connection.Open();
 
@@ -244,12 +285,20 @@ namespace post_office
                 invoiceCommand.Parameters.AddWithValue("@workers_id", workerId);
                 invoiceCommand.ExecuteNonQuery();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при выполнении операции: " + ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         // Добавление посылки в таблицу "package"
         private void AddPackage(int clientsId, int storageId)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            try
             {
                 connection.Open();
 
@@ -265,12 +314,13 @@ namespace post_office
 
                 if (count > 0)
                 {
-                    int packid = GetPackageId();
+                    int packageId = GetPackageId(clientsId);
                     string updateQuery = "UPDATE package SET status='Ожидает вручения' WHERE id=@pack_id";
                     MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection);
-                    updateCommand.Parameters.AddWithValue("@pack_id", packid);
-                    MessageBox.Show("Статус существующей посылки был изменен");
+                    updateCommand.Parameters.AddWithValue("@pack_id", packageId);
+                    MessageBox.Show("Статус существующей посылки был изменен, ID:" + packageId);
                     updateCommand.ExecuteNonQuery();
+                    OpenWindow(clientsId, packageId);
                     return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
                 }
 
@@ -287,29 +337,41 @@ namespace post_office
                 packageCommand.Parameters.AddWithValue("@clients_id", clientsId);
                 packageCommand.ExecuteNonQuery();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при выполнении операции: " + ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         // Получение ID посылки из таблицы "package"
-        private int GetPackageId()
+        private int GetPackageId(int clientsId)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
                 // Получение ID добавленной записи в таблице "package"
-                string getPackageIdQuery = "SELECT LAST_INSERT_ID();"; // Последний автоинкрементный ID
+                string getPackageIdQuery = "SELECT id FROM package WHERE weight = @weight AND type = @type AND pac_rank = @pac_rank AND clients_id = @clients_id;"; 
                 MySqlCommand getPackageIdCommand = new MySqlCommand(getPackageIdQuery, connection);
+                getPackageIdCommand.Parameters.AddWithValue("@weight", weightTextBox.Text);
+                string selectedType = ((ComboBoxItem)typeComboBox.SelectedItem).Content.ToString();
+                getPackageIdCommand.Parameters.AddWithValue("@type", selectedType);
+                string selectedRank = ((ComboBoxItem)rankComboBox.SelectedItem).Content.ToString();
+                getPackageIdCommand.Parameters.AddWithValue("@pac_rank", selectedRank);
+                getPackageIdCommand.Parameters.AddWithValue("@clients_id", clientsId);
                 int packageId = Convert.ToInt32(getPackageIdCommand.ExecuteScalar());
                 return packageId;
             }
         }
-
         // Обработчик кнопки "Next"
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                
                 // Добавление адреса
                 AddAddress();
                 int addressId = GetAddressId();
@@ -327,12 +389,14 @@ namespace post_office
 
                 // Добавление посылки
                 AddPackage(clientsId, storageId);
-                int packageId = GetPackageId();
+                int packageId = GetPackageId(clientsId);
 
                 // Открытие окна подтверждения
-                MailOK mailOK = new MailOK(fullname, wor_root, workerId, packageId, clientsId);
-                mailOK.Show();
-                this.Close();
+                // Проверка открытия окна MailOK
+                if (!Application.Current.Windows.OfType<MailOK>().Any())
+                {
+                    OpenWindow(clientsId, packageId);
+                }
             }
             catch (Exception ex)
             {
@@ -342,6 +406,12 @@ namespace post_office
             {
                 connection.Close();
             }
+        }
+        private void OpenWindow(int clientsId, int packageId)
+        {
+            MailOK mailOK = new MailOK(fullname, wor_root, workerId, packageId, clientsId);
+            mailOK.Show();
+            this.Close();
         }
     }
 }

@@ -55,10 +55,10 @@ namespace post_office
                     if (count > 0)
                     {
                         MessageBox.Show("Клиент уже существует в базе данных!");
+                        clientsWindow.LoadData();
                         clientsWindow.Show();
                         Close();
                         return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
-
                     }
 
                     // Вставка записи в таблицу "address" с использованием параметров
@@ -82,7 +82,7 @@ namespace post_office
                     clientsInsertCommand.Parameters.AddWithValue("@phone", phone);
                     clientsInsertCommand.ExecuteNonQuery();
 
-                    // Получение ID вставленной записи
+                    // Вставка в статистику
                     string getLastInsertIdQuery = "SELECT LAST_INSERT_ID()";
                     MySqlCommand getLastInsertIdCommand = new MySqlCommand(getLastInsertIdQuery, connection);
                     int result = Convert.ToInt32(getLastInsertIdCommand.ExecuteScalar());
@@ -91,7 +91,7 @@ namespace post_office
                 }
 
                 MessageBox.Show("Клиент успешно добавлен в базу данных!");
-
+                clientsWindow.LoadData();
                 clientsWindow.Show();
                 Close();
             }

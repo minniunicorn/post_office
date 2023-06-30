@@ -30,7 +30,7 @@ namespace post_office
         {
             string query = "SELECT statistic.id, statistic.datetime, statistic.action, CONCAT(workers.surname, ' ', workers.name, ' ', workers.lastname) AS worker_name " +
                            "FROM statistic " +
-                           "JOIN workers ON statistic.workers_id = workers.id";
+                           "JOIN workers ON statistic.workers_id = workers.id ORDER BY id DESC";
 
             try
             {
