@@ -68,13 +68,13 @@
         <DataGrid Grid.Row="1" x:Name="dataGrid" ItemsSource="{Binding Parcels}" Style="{StaticResource DataGridStyle}" RowStyle="{StaticResource {x:Type DataGridRow}}"
                   ColumnWidth="*">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="#ID" Binding="{Binding remittance_id}"/>
+                <DataGridTextColumn Header="#ID" Binding="{Binding remittance_id}" Width="0.5*"/>
                 <DataGridTextColumn Header="Сумма перевода" Binding="{Binding money_sum}"/>
                 <DataGridTextColumn Header="Итоговая сумма" Binding="{Binding total_sum}"/> 
                 <DataGridTextColumn Header="ФИО отправителя" Binding="{Binding sender_name}" Width="2*"/>
-                <DataGridTextColumn Header="Адрес отправителя" Binding="{Binding sender_address}" Width="2*"/>
+                <DataGridTextColumn Header="Адрес отправителя" Binding="{Binding sender_address}" Width="3*"/>
                 <DataGridTextColumn Header="ФИО получателя" Binding="{Binding recipient_name}" Width="2*"/>
-                <DataGridTextColumn Header="Адрес получателя" Binding="{Binding recipient_address}" Width="2*"/>
+                <DataGridTextColumn Header="Адрес получателя" Binding="{Binding recipient_address}" Width="3*"/>
 
             </DataGrid.Columns>
         </DataGrid>

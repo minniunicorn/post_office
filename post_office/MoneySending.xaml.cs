@@ -102,7 +102,7 @@ namespace post_office
             }
         }
 
-        private int GetAddressId()
+        private int GetSendAddressId()
         {
             using (connection)
             {
@@ -120,19 +120,41 @@ namespace post_office
             }
         }
 
+        private void Recipient_fio(int recaddressId)
+        {
+            using (connection)
+            {
+                connection.Open();
+                // Проверка наличия клиента в базе данных
+                string checkQuery = "SELECT COUNT(*) FROM clients WHERE name = @name AND surname = @surname AND lastname = @lastname;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@surname", r_surnameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@name", r_nameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@lastname", r_lastnameTextBox.Text);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
+                string clientsQuery = "INSERT INTO clients (surname, name, lastname, address_id) VALUES (@surname, @name, @lastname, @address_id);";
+                MySqlCommand clientsCommand = new MySqlCommand(clientsQuery, connection);
+                clientsCommand.Parameters.AddWithValue("@surname", r_surnameTextBox.Text);
+                clientsCommand.Parameters.AddWithValue("@name", r_nameTextBox.Text);
+                clientsCommand.Parameters.AddWithValue("@lastname", r_lastnameTextBox.Text);
+                clientsCommand.Parameters.AddWithValue("@address_id", recaddressId);
+                clientsCommand.ExecuteNonQuery();
+            }
+        }
 
-        private void Recipient_inf()
+        private void Recipient_address()
         {
             using (connection)
             {
                 connection.Open();
 
-                string checkQuery = "SELECT COUNT(*) FROM recipient WHERE name = @name AND surname = @surname AND lastname = @lastname postal_index = @postal_index AND town = @town " +
-                    "AND street = @street AND house = @house AND appart = @appart;";
+                // Проверка наличия клиента в базе данных
+                string checkQuery = "SELECT COUNT(*) FROM address WHERE postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
                 MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
-                checkCommand.Parameters.AddWithValue("@surname", r_surnameTextBox.Text);
-                checkCommand.Parameters.AddWithValue("@name", r_nameTextBox.Text);
-                checkCommand.Parameters.AddWithValue("@lastname", r_lastnameTextBox.Text);
                 checkCommand.Parameters.AddWithValue("@postal_index", r_postalIndexTextBox.Text);
                 checkCommand.Parameters.AddWithValue("@town", r_townTextBox.Text);
                 checkCommand.Parameters.AddWithValue("@street", r_streetTextBox.Text);
@@ -144,38 +166,46 @@ namespace post_office
                     return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
                 }
 
-                string query = "INSERT INTO recipient (surname, name, lastname, postal_index, town, street, house, appart) " +
-                               "VALUES (@surname, @name, @lastname, @postal_index, @town, @street, @house, @appart);";
-
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@surname", r_surnameTextBox.Text);
-                command.Parameters.AddWithValue("@name", r_nameTextBox.Text);
-                command.Parameters.AddWithValue("@lastname", r_lastnameTextBox.Text);
-                command.Parameters.AddWithValue("@postal_index", r_postalIndexTextBox.Text);
-                command.Parameters.AddWithValue("@town", r_townTextBox.Text);
-                command.Parameters.AddWithValue("@street", r_streetTextBox.Text);
-                command.Parameters.AddWithValue("@house", r_houseTextBox.Text);
-                command.Parameters.AddWithValue("@appart", r_appartTextBox.Text);
-
-                command.ExecuteNonQuery();
+                string addressQuery = "INSERT INTO address (postal_index, town, street, house, appart) VALUES (@postal_index, @town, @street, @house, @appart);";
+                MySqlCommand addressCommand = new MySqlCommand(addressQuery, connection);
+                addressCommand.Parameters.AddWithValue("@postal_index", r_postalIndexTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@town", r_townTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@street", r_streetTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@house", r_houseTextBox.Text);
+                addressCommand.Parameters.AddWithValue("@appart", r_appartTextBox.Text);
+                addressCommand.ExecuteNonQuery();
             }
         }
-        private int GetRecId()
+
+        private int GetRecAddressId()
         {
             using (connection)
             {
                 connection.Open();
 
-                string getRecIdQuery = "SELECT id FROM recipient WHERE surname = @surname AND name = @name AND lastname = @lastname AND postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
+                string getAddressIdQuery = "SELECT id FROM address WHERE postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
+                MySqlCommand getAddressIdCommand = new MySqlCommand(getAddressIdQuery, connection);
+                getAddressIdCommand.Parameters.AddWithValue("@postal_index", r_postalIndexTextBox.Text);
+                getAddressIdCommand.Parameters.AddWithValue("@town", r_townTextBox.Text);
+                getAddressIdCommand.Parameters.AddWithValue("@street", r_streetTextBox.Text);
+                getAddressIdCommand.Parameters.AddWithValue("@house", r_houseTextBox.Text);
+                getAddressIdCommand.Parameters.AddWithValue("@appart", r_appartTextBox.Text);
+                int addressId = Convert.ToInt32(getAddressIdCommand.ExecuteScalar());
+                return addressId;
+            }
+        }
+        private int GetRecId(int addressId)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string getRecIdQuery = "SELECT id FROM clients WHERE surname = @surname AND name = @name AND lastname = @lastname AND address_id = @address_id;;";
                 MySqlCommand getRecIdCommand = new MySqlCommand(getRecIdQuery, connection);
                 getRecIdCommand.Parameters.AddWithValue("@surname", r_surnameTextBox.Text);
                 getRecIdCommand.Parameters.AddWithValue("@name", r_nameTextBox.Text);
                 getRecIdCommand.Parameters.AddWithValue("@lastname", r_lastnameTextBox.Text);
-                getRecIdCommand.Parameters.AddWithValue("@postal_index", r_postalIndexTextBox.Text);
-                getRecIdCommand.Parameters.AddWithValue("@town", r_townTextBox.Text);
-                getRecIdCommand.Parameters.AddWithValue("@street", r_streetTextBox.Text);
-                getRecIdCommand.Parameters.AddWithValue("@house", r_houseTextBox.Text);
-                getRecIdCommand.Parameters.AddWithValue("@appart", r_appartTextBox.Text);
+                getRecIdCommand.Parameters.AddWithValue("@address_id", addressId);
                 int recId = Convert.ToInt32(getRecIdCommand.ExecuteScalar());
                 return recId;
             }
@@ -240,11 +270,16 @@ namespace post_office
             try
             {
                 Sender_address();
-                int addressId=GetAddressId();
-                Sender_fio(addressId);
-                int sendId = GetSendId(addressId);
-                Recipient_inf();
-                int recId = GetRecId();
+                int sendaddressId=GetSendAddressId();
+                Sender_fio(sendaddressId);
+                int sendId = GetSendId(sendaddressId);
+
+
+                Recipient_address();
+                int recaddressId = GetRecAddressId();
+                Recipient_fio(recaddressId);
+                int recId = GetRecId(recaddressId);
+                
                 Money_sum(sendId, recId);
                 int moneyId = GetMoneyId(sendId, recId);
                 MoneyOK moneyOK = new MoneyOK(fullname, wor_root, workerId, moneyId);
