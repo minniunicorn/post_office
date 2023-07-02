@@ -1,0 +1,84 @@
+﻿<Window x:Class="post_office.AllMoneySending"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:post_office"
+        mc:Ignorable="d"
+        Title="Денежные переводы" WindowState="Maximized" Icon="/Image/logo1.png" MinHeight="1000" MinWidth="1920">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Montserrat Alternates"/>
+            <Setter Property="Background" Value="#FF2B92CD"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FF2B92CD"/>
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="500"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Text" Value="Введите текст..." />
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="Text" Value="" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding status}" Value="Ожидает вручения">
+                    <Setter Property="Background" Value="#93ff54"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding status}" Value="В пути">
+                    <Setter Property="Background" Value="#f6ff54"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding status}" Value="Выдана">
+                    <Setter Property="Background" Value="#b0b0b0"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Image/back2.jpg" Opacity="0.35"/>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <Button Name="gotomain" Content="Вернуться к выбору операций" Style="{StaticResource ButtonStyle}" Grid.Row="0" Click="Gotomain_Click"/>
+
+        <!-- Таблица с данными -->
+        <DataGrid Grid.Row="1" x:Name="dataGrid" ItemsSource="{Binding Parcels}" Style="{StaticResource DataGridStyle}" RowStyle="{StaticResource {x:Type DataGridRow}}"
+                  ColumnWidth="*">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="#ID" Binding="{Binding remittance_id}"/>
+                <DataGridTextColumn Header="Сумма перевода" Binding="{Binding money_sum}"/>
+                <DataGridTextColumn Header="Итоговая сумма" Binding="{Binding total_sum}"/> 
+                <DataGridTextColumn Header="ФИО отправителя" Binding="{Binding sender_name}" Width="2*"/>
+                <DataGridTextColumn Header="Адрес отправителя" Binding="{Binding sender_address}" Width="2*"/>
+                <DataGridTextColumn Header="ФИО получателя" Binding="{Binding recipient_name}" Width="2*"/>
+                <DataGridTextColumn Header="Адрес получателя" Binding="{Binding recipient_address}" Width="2*"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+    </Grid>
+</Window>

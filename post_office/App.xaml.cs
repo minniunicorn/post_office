@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace post_office
 {
@@ -13,5 +7,6 @@ namespace post_office
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }

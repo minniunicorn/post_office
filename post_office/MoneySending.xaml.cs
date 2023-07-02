@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 
@@ -49,7 +50,17 @@ namespace post_office
             using (connection)
             {
                 connection.Open();
-
+                // Проверка наличия клиента в базе данных
+                string checkQuery = "SELECT COUNT(*) FROM clients WHERE name = @name AND surname = @surname AND lastname = @lastname;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@name", nameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@surname", surnameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@lastname", lastnameTextBox.Text);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
                 string clientsQuery = "INSERT INTO clients (surname, name, lastname, address_id) VALUES (@surname, @name, @lastname, @address_id);";
                 MySqlCommand clientsCommand = new MySqlCommand(clientsQuery, connection);
                 clientsCommand.Parameters.AddWithValue("@surname", surnameTextBox.Text);
@@ -65,6 +76,21 @@ namespace post_office
             using (connection)
             {
                 connection.Open();
+
+                // Проверка наличия клиента в базе данных
+                string checkQuery = "SELECT COUNT(*) FROM address WHERE postal_index = @postal_index AND town = @town AND street = @street AND house = @house AND appart = @appart;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@postal_index", postalIndexTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@town", townTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@street", streetTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@house", houseTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@appart", appartTextBox.Text);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
+
                 string addressQuery = "INSERT INTO address (postal_index, town, street, house, appart) VALUES (@postal_index, @town, @street, @house, @appart);";
                 MySqlCommand addressCommand = new MySqlCommand(addressQuery, connection);
                 addressCommand.Parameters.AddWithValue("@postal_index", postalIndexTextBox.Text);
@@ -100,6 +126,23 @@ namespace post_office
             using (connection)
             {
                 connection.Open();
+
+                string checkQuery = "SELECT COUNT(*) FROM recipient WHERE name = @name AND surname = @surname AND lastname = @lastname postal_index = @postal_index AND town = @town " +
+                    "AND street = @street AND house = @house AND appart = @appart;";
+                MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
+                checkCommand.Parameters.AddWithValue("@surname", r_surnameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@name", r_nameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@lastname", r_lastnameTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@postal_index", r_postalIndexTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@town", r_townTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@street", r_streetTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@house", r_houseTextBox.Text);
+                checkCommand.Parameters.AddWithValue("@appart", r_appartTextBox.Text);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+                if (count > 0)
+                {
+                    return; // Прерывание выполнения метода, чтобы клиент не был добавлен повторно
+                }
 
                 string query = "INSERT INTO recipient (surname, name, lastname, postal_index, town, street, house, appart) " +
                                "VALUES (@surname, @name, @lastname, @postal_index, @town, @street, @house, @appart);";
@@ -239,6 +282,12 @@ namespace post_office
 
         }
 
-        
+        private void All_rem_Click(object sender, RoutedEventArgs e)
+        {
+            AllMoneySending allMoney = new AllMoneySending(fullname, wor_root, workerId);
+            allMoney.Show();
+            this.Close();
+            Statistic.InsertStatistic("Просмотр всех переводов", workerId);
+        }
     }
 }

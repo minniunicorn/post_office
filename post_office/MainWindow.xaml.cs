@@ -1,28 +1,43 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Windows;
+using static Xceed.Wpf.Toolkit.Calculator;
 
 namespace post_office
 {
     public partial class MainWindow : Window
     {
         // Строка подключения к базе данных
-        static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
+        public static readonly string connectionString = "Server=localhost;Database=post_office;Uid=root;Pwd=;";
         // Подключение к базе данных MySQL
-        readonly MySqlConnection selectConnection = new MySqlConnection(connectionString);
+        public  MySqlConnection selectConnection = new MySqlConnection(connectionString);
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        int workerId = 0;
+        public int workerId = 0;
+        public string fullName = null;
+        public string root = null;
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+
             string username = UsernameTextBox.Text; // Получаем введенное имя пользователя
             string password = PasswordBox.Password; // Получаем введенный пароль
+            bool check = Login(username, password);
+            if (check)
+            {
+                Statistic.InsertStatistic("Вход", workerId); // Добавляем данные в таблицу statistic
+                Operations operations = new Operations(fullName, root, workerId);
+                operations.Show();
+                this.Close();
+            }
+        }
 
+        public bool Login(string username, string password)
+        {
             try
             {
                 selectConnection.Open(); // Открываем соединение для выборки данных
@@ -33,9 +48,6 @@ namespace post_office
                 selectCommand.Parameters.AddWithValue("@username", username);
                 selectCommand.Parameters.AddWithValue("@password", password);
 
-                string fullName = null;
-                string root = null;
-
                 using (MySqlDataReader reader = selectCommand.ExecuteReader())
                 {
                     if (reader.Read())
@@ -44,22 +56,20 @@ namespace post_office
                         fullName = reader.GetString("fullname");
                         root = reader.GetString("root");
                         workerId = reader.GetInt32("id");
-                        Statistic.InsertStatistic("Вход", workerId); // Добавляем данные в таблицу statistic
-                        // Логин и пароль верны, открываем новое окно Window1 и передаем в него полное имя работника
-                        Operations operations = new Operations(fullName, root, workerId);
-                        operations.Show();
-                        this.Close();
+                        return true;
                     }
                     else
                     {
                         // Логин и/или пароль неверны, выводим сообщение об ошибке
                         ErrorLabel.Content = "Неверный логин и/или пароль";
+                        return false;
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Ошибка при выполнении операции: " + ex.Message);
+                return false;
             }
             finally
             {

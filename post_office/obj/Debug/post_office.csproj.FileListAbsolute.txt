@@ -79,3 +79,5 @@ D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\Cl
 D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\ClientsWindow.baml
 D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\Operations.g.cs
 D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\Operations.baml
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\AllMoneySending.g.cs
+D:\Учеба\3 курс\курсовая_2\post_office\post_office\obj\Debug\AllMoneySending.baml

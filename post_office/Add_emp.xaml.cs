@@ -45,11 +45,16 @@ namespace post_office
                     connection.Open();
 
                     // Проверка наличия клиента в базе данных
-                    string checkQuery = "SELECT COUNT(*) FROM clients WHERE name = @firstname AND surname = @surname AND lastname = @lastname";
+                    string checkQuery = "SELECT COUNT(*) FROM clients c JOIN address a ON c.address_id = a.id " +
+                                        "WHERE c.name = @firstname AND c.surname = @surname AND c.lastname = @lastname AND a.town = @town AND AND a.street = @street AND a.house = @house AND a.appart = @appart";
                     MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection);
                     checkCommand.Parameters.AddWithValue("@firstname", firstname);
                     checkCommand.Parameters.AddWithValue("@surname", surname);
                     checkCommand.Parameters.AddWithValue("@lastname", lastname);
+                    checkCommand.Parameters.AddWithValue("@town", town);
+                    checkCommand.Parameters.AddWithValue("@street", street);
+                    checkCommand.Parameters.AddWithValue("@house", house);
+                    checkCommand.Parameters.AddWithValue("@apart", apart);
 
                     int count = Convert.ToInt32(checkCommand.ExecuteScalar());
                     if (count > 0)

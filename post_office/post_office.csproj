@@ -118,6 +118,9 @@
     <Compile Include="Add_emp.xaml.cs">
       <DependentUpon>Add_emp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AllMoneySending.xaml.cs">
+      <DependentUpon>AllMoneySending.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Edit_emp.xaml.cs">
       <DependentUpon>Edit_emp.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
     </Compile>
     <Compile Include="Сlasses\Statistic.cs" />
     <Page Include="Add_emp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AllMoneySending.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
